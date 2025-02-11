@@ -1,0 +1,148 @@
+/* -----------------------------------------------------------------------------
+// 6. Testimonials 
+// ----------------------------------------------------------------------------- */
+
+// *************************************************
+// We redesigned these components to suit the 
+// 'Barber' template:
+// - Testimonial style 3
+// **************************************************
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Testimonial style 1
+// - Testimonial style 2
+// - Testimonial style 3
+// - Testimonial style 4
+
+
+// Testimonial Style 1
+// --------------------------------------------------
+.testimonials-slider {
+    .testimonial {
+        text-align: center;
+        width: 50%;
+        margin: 0 auto;
+
+        h4 {
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+
+            img {
+                margin: -3px 10px 0 0;
+            }
+        }
+    }
+
+    // navigation icons
+    .owl-buttons {
+
+        .owl-prev,
+        .owl-next {
+            position: absolute;
+            border-radius: 100%;
+            color: #e7e7e7;
+            border: 2px solid #e7e7e7;
+            background-color: transparent;
+
+            -webkit-transition: all .5s;
+                    transition: all .5s;
+
+            &:hover {
+                border-color: $brand-color;
+                color: $brand-color;
+                background-color: transparent;
+            }
+        }
+
+        .owl-prev {
+            left: 10%;
+            top: 40%;
+        }
+
+        .owl-next {
+            right: 10%;
+            top: 40%;
+        }
+    }
+
+    @media( max-width: 500px) {
+        .owl-buttons {
+            display: none;
+        }
+    }
+}
+
+
+
+// Testimonials' Style 3
+// --------------------------------------------------
+
+// This style of the testimonial component requires
+// a background image, so make sure that you add a background image
+// to the container of the testimonials. In this case we add 'testimonial-bg'
+// class and applied the background image to it.
+
+.testimonial-bg {
+    background: #4a4848 url(../img/devices-bg.jpg) center center;
+}
+
+.testimonial.style3 {
+    width: 80%;
+    margin-left: 0;
+    text-align: left;
+
+    p {
+        font-family: $headings-font-family;
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 28px;
+        text-transform: uppercase;
+        color: #fff;
+    }
+
+    h4 {
+        font-family: $links-font-family;
+        margin-top: 50px;
+        color: $brand-color;
+        text-transform: uppercase;
+    }
+}
+
+//
+// Testimonial Style 4
+// --------------------------------------------------
+.testimonial.style4 {
+    text-align: center;
+
+    p {
+        font-family: $headings-font-family;
+        font-size: 24px;
+        line-height: 36px;
+        color: #4b4b4b;
+    }
+
+    h4 {
+        margin-top: 50px;
+        color: $brand-color;
+        text-transform: uppercase;
+
+        .job {
+            display: block;
+            color: #9c9c9c;
+        }
+    }
+
+    .avatar {
+        position: relative;
+        bottom: -40px;
+        height: 100px;
+        width: 100px;
+        margin: 0 auto;
+        border-radius: 100%;
+        overflow: hidden;
+        border: 5px solid #fff;
+    }
+}

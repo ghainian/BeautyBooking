@@ -1,0 +1,187 @@
+/* -----------------------------------------------------------------------------
+// 7. Pricing 
+// ----------------------------------------------------------------------------- */
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Pricing Table Style 1
+// - Pricing Table style 2
+
+
+// Pricing Table style 1
+// -------------------------------------
+.price-table {
+	padding: 35px 50px 25px 50px;
+	background-color: #fff;
+	text-align: center;
+
+	-webkit-transition: background-color .5s;
+			transition: background-color .5s;
+
+	// heading
+	h4 {
+		text-transform: uppercase;
+		padding-bottom: 35px;
+		margin-bottom: 35px;
+		border-bottom: 1px solid #ececec;
+	}
+
+	// list of features
+	ul > li {
+		text-align: left;
+		color: #9c9c9c;
+
+		&:before {
+			color: #9c9c9c;
+		}
+	}
+
+	// price
+	.price {
+		padding: 30px 0 25px 0;
+		margin: 25px 0;
+		border-top: 1px solid #ececec;
+		border-bottom: 1px solid #ececec;
+		font-size: 48px;
+		font-weight: 600;
+		color: #181818;
+
+		// 'month' text
+		.date {
+			font-size: 14px;
+			margin-left: 5px;
+		}
+
+		// dollar sign
+		.currency {
+			position: relative;
+			top: -25px;
+			margin-right: 10px;
+			font-size: 18px;
+		}
+	}
+
+	// price table on hover
+	&:hover {
+		background-color: $brand-color;
+
+		h4,
+		ul > li,
+		ul > li:before,
+		.price {
+			color: #fff;
+		}
+
+		.btn {
+			background-color: #242424;
+			border-color: #242424;
+			color: #fff;
+		}
+	}
+}
+
+@media (max-width: 992px){
+	.price-table {
+		margin-bottom: 20px;
+	}
+}
+
+
+// Pricing Table style 2
+// -------------------------------------
+.price-table-colored {
+	padding: 25px;
+	background-color: #f9f9f9;
+	text-align: center;
+
+	-webkit-transition: background-color .5s;
+			transition: background-color .5s;
+
+	// heading
+	h4 {
+		text-transform: uppercase;
+		color: #fff;
+	}
+
+	ul > li {
+		color: #fff;
+		opacity: .7;
+	}
+
+	// price
+	.price {
+		font-size: 36px;
+		font-weight: 600;
+		margin: 35px 0 25px 0;
+		color: #fff;
+
+		// 'month' text
+		.date {
+			font-size: 14px;
+			margin-left: 5px;
+		}
+
+		// dollar sign
+		.currency {
+			position: relative;
+			top: -15px;
+			margin-right: 5px;
+			font-size: 18px;
+		}
+	}
+
+	// button
+	.btn {
+		width: 100%;
+		margin-top: 25px;
+		opacity: .5;
+		border: none;
+
+		-webkit-transition: all .5s;
+				transition: all .5s;
+
+		&:hover {
+			border: none;
+		}
+	}
+
+	// 'standard' type - light blue clor
+	&.standard {
+		background-color: #26a7ce;
+		.btn {
+			color: #26a7ce;
+		}
+	}
+
+	// 'business' type - dark blue clor
+	&.business {
+		background-color: #5d7abb;
+		.btn {
+			color: #5d7abb;
+		}
+	}
+
+	// 'premium' type - dark blue clor
+	&.premium {
+		background-color: #964ca8;
+		.btn {
+			color: #964ca8;
+		}
+	}
+
+	// 'utlimate' type - pink clor
+	&.ultimate {
+		background-color: #e30e8e;
+		.btn {
+			color: #e30e8e;
+		}
+	}
+
+	// Pricing Table on hover
+	&:hover {
+		.btn {
+			opacity: 1;
+		}
+	}
+}

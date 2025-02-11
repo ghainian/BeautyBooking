@@ -1,0 +1,36 @@
+@charset 'UTF-8';
+
+@import
+  'utils/utils';
+
+/*
+// Table of content
+// -----------------------------------------------------------------------------
+// - 1. Homepage
+// - 2. About Page
+// - 3. Gallery Page
+// - 4. Gallery Detail Page
+// - 5. Services Page
+// - 6. Contact Page
+*/
+
+// Page-specific styles
+@import
+
+  // home page
+  'pages/homepage',
+
+  // about 
+  'pages/about',
+
+  // gallery 
+  'pages/gallery',
+
+  // gallery detail
+  'pages/gallery-detail',
+
+  // services
+  'pages/services',
+
+  // contact
+  'pages/contact';

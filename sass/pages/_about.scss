@@ -1,0 +1,119 @@
+/* -----------------------------------------------------------------------------
+// 2. About Page 
+// ----------------------------------------------------------------------------- */
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Section Headline
+// - Section 1 - Hero Slider
+// - Section 2 - About Us 
+// - Section 3 - Clients 
+
+
+//
+// About Page
+// --------------------------------------------------
+.about {
+
+// Section Headline
+// --------------------------------------------------
+    .section-headline {
+        margin-bottom: 30px;
+        text-align: center;
+
+        h3 {
+            text-transform: uppercase;
+
+            & + p {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+
+// Section 1 - Hero Title
+// --------------------------------------------------
+    .hero-title {
+        background-image: url(http://placehold.it/1895x500);
+    }
+
+
+// Section 2 - About Us 
+// --------------------------------------------------
+    .aboutus {
+        h3 {
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+    }
+
+
+// Section 3 - Numbers
+// --------------------------------------------------
+    .numbers {
+        .progress-item {
+            text-align: center;
+
+            strong {
+                font-family: $headings-font-family;
+                position: absolute;
+                top: 57.5px;
+                right: 0;
+                left: 0;
+                color: #4b4b4b;
+                font-weight: normal;
+                font-size: 18px;
+            }
+
+            h4 {
+                font-weight: 500;
+                margin: 30px 0 25px 0;
+                text-transform: uppercase;
+                color: #4b4b4b;
+
+                & + p {
+                    padding: 0 15px;
+                    margin-bottom: 20px;
+                }
+            }
+        }
+
+        @media (max-width:992px) {
+            .progress-item {
+                margin-bottom: 30px; 
+            }
+        }
+    }
+
+
+// Section 3 - Clients 
+// --------------------------------------------------
+    .clients {
+        background: url(http://placehold.it/1895x1000) center center;
+
+        .section-headline {
+            h3 {
+                color: $brand-color;
+            }
+            p{
+                text-transform: uppercase;
+                font-family: $headings-font-family;
+            }
+        }
+
+        @media (max-width:992px) {
+            img {
+                margin-bottom: 30px;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
