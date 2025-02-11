@@ -1,0 +1,109 @@
+/* -----------------------------------------------------------------------------
+// 4. CTA
+// ----------------------------------------------------------------------------- */
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Call To Action
+
+
+// Call To Action
+// --------------------------------------------------
+.cta {
+    padding: 30px 0;
+
+    p {
+        margin-bottom: 0;
+    }
+
+    h3 {
+        margin-top: 5px;
+    }
+
+    .btn {
+        margin-right: 5px;
+    }
+
+    .cta-buttons {
+        text-align: right;
+    }
+
+    @media (max-width:992px) {
+        .cta {
+            text-align: center;
+        }
+
+        .cta-buttons {
+            margin-top: 15px;
+            text-align: center;
+        }
+    }
+
+    &-basic {
+        padding-top: 40px;
+
+        h4 {
+            margin-top: 15px;
+        }
+    }
+
+    // with splash wallpaper
+    &-splash {
+        position: relative;
+        background: url(../img/cta-splash.jpg) center center no-repeat;
+        background-size: cover;
+        padding: 0;
+
+        &-color {
+            width: 50%;
+            float: right;
+            padding: 60px;
+            background-color: rgba(234, 30, 146, .9);
+        }
+
+        h3 {
+            color: #fff;
+            margin: 0;
+        }
+
+        .btn {
+            margin-top: 15px;
+            background-color: #fff;
+            color: #4b4b4b;
+        }
+    }
+
+    // with image
+    &-img {
+        padding: 70px 0 0 0;
+    }
+
+    // with background color
+    &-colored {
+        padding-top: 40px;
+        background-color: $brand-color;
+
+        h3 {
+            color: $heading-text-color;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+    }
+}
+
+@media (max-width:768px){
+    .cta {
+        text-align: center;
+
+        &-img {
+            padding-bottom: 50px;
+        }
+
+        &-splash-color {
+            width: 100%;
+            float: none;
+        }
+    }
+}

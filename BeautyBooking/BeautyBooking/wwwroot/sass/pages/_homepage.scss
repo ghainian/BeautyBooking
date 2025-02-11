@@ -1,0 +1,364 @@
+/* -----------------------------------------------------------------------------
+// 1. Homepage
+// ----------------------------------------------------------------------------- */
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Section Headline
+// - Section 1 - Hero Splash
+// - Section 3 - Welcome
+// - Section 4 - Counters
+// - Section 6 - Gallery
+// - Section 7 - Testimonials
+// - Section 8 - Shop
+
+
+//
+// homepage
+// --------------------------------------------------
+.homepage {
+
+// Section Headline
+// --------------------------------------------------
+    .section-headline {
+        margin-bottom: 40px;
+        text-align: center;
+
+        h3 {
+            text-transform: uppercase;
+
+            & + p {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+
+// Section 1 - Hero Splash
+// --------------------------------------------------
+    .hero-splash {
+        position: relative;
+        height: 800px;
+        overflow: hidden;
+        text-align: center;
+
+        .splash-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            @media (max-width:1200px) {
+                img {
+                    max-width: initial;
+                }
+            }
+        }
+
+        // positioning it in the center
+        .align {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+
+            -webkit-transform: translateY(-50%);
+               -moz-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                 -o-transform: translateY(-50%);
+                    transform: translateY(-50%);
+        }
+
+        @media (max-width:992px) {
+            .align img {
+                width: 300px;
+            }
+        }
+
+        .owl-pagination {
+            position: absolute;
+            bottom: 30px;
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            text-align: center;
+
+            .owl-page {
+                display: inline-block;
+
+                span {
+                    display: block;
+                    width: 12px;
+                    height: 12px;
+                    margin: 5px 7px;
+                    filter: Alpha(Opacity=50);
+                    opacity: 0.5;
+                    border: 2px solid #fff;
+                    -webkit-border-radius: 20px;
+                    -moz-border-radius: 20px;
+                    border-radius: 20px;
+                    background: transparent;
+                }
+
+                &.active span {
+                    filter: Alpha(Opacity=100);
+                    opacity: 1;
+                    border-color: $brand-color;
+                    background-color: $brand-color;
+                }
+            }
+        }
+    }
+
+
+// Section 3 - Welcome
+// --------------------------------------------------
+    .welcome {
+        .welcome-gallery {
+            img {
+                margin-bottom: 15px;
+                width: 31.5%;
+
+                & + img {
+                    margin-left: 2%;
+                }
+            }
+        }
+
+        .content {
+            padding-left: 30px;
+        }
+
+        h2 {
+            margin-top: 0;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        p {
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            margin-top: 5px;
+        }
+    }
+
+
+// Section 4 - Counters
+// --------------------------------------------------
+    .counters {
+        background: url(http://placehold.it/1895x1200) center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+        .section-headline {
+            h3 {
+               color: $brand-color;
+               letter-spacing: 1px;
+            }
+
+            p {
+                font-family: $headings-font-family;
+            }
+        }
+
+        .btn + .btn {
+            margin-left: 10px;
+        }
+    }
+
+
+// Section 5 - Services
+// --------------------------------------------------
+    .services-section {
+        .iconbox:hover {
+            background-color: $brand-color;
+            border-bottom-color: #d1af73;
+
+            .icon {
+                background-color: $heading-text-color;
+            }
+
+            h4,p {
+                color: $heading-text-color;
+            }
+        }
+    }
+
+
+// Section 6 - Gallery
+// --------------------------------------------------
+    .gallery {
+        .gallery-item {
+            position: relative;
+            width: 20%;
+            float: left;
+
+            .caption {
+                position: absolute;
+                bottom: 20px;
+                right: 0;
+                left: 0;
+                margin: 0 auto;
+                width: 100%;
+                padding: 20px 0;
+                background-color: #181818; // fallback
+                background-color: rgba(24, 24, 24, .75);
+                color: #fff;
+                font-family: $headings-font-family;
+                text-transform: uppercase;
+                text-align: center;
+                font-size: 18px;
+
+                p {
+                    margin: 0;
+                }
+            }
+
+            .meta {
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                text-align: center;
+                opacity: 0;
+                @include transition(opacity, .3s);
+
+                -webkit-transform: translateY(-50%);
+                -moz-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                -o-transform: translateY(-50%);
+                transform: translateY(-50%);
+
+                a {
+                    display: inline-block;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    font-size: 18px;
+                    border-radius: 5px;
+                    background-color: $brand-color;
+                    color: $heading-text-color;
+                    @include transition(background-color, .5s);
+
+                    & + a {
+                        margin-left: 5px;
+                    }
+
+                    &:hover {
+                        background-color: $heading-text-color;
+                        color: $brand-color;
+                    }
+                }
+            }
+
+            &:hover {
+                .meta {
+                    opacity: 1;
+                }
+            }
+        }
+
+        @media (max-width:992px){
+            .gallery-item {
+                width: 50%;
+            }
+        }
+
+        @media (max-width:768px) {
+            .gallery-item {
+                width: 100%;
+            }
+        }
+    }
+
+
+// Section 7 - Testimonials
+// --------------------------------------------------
+    .testimonials {
+        background: url(http://placehold.it/1895x1200) center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+        .section-headline {
+            text-align: left;
+
+            h3 {
+               color: $brand-color;
+            }
+
+            p {
+                text-transform: uppercase;
+                font-family: $headings-font-family;
+                color: #717171;
+            }
+        }
+
+        // pagination circles
+        .owl-pagination {
+            position: absolute;
+            right: 0;
+            left: initial;
+            top: 15px;
+
+            .owl-page {
+                display: block;
+
+                span {
+                    display: block;
+                    width: 12px;
+                    height: 12px;
+                    margin: 5px 7px;
+                    opacity: 1;
+                    border: 1px solid #fff;
+                    -webkit-border-radius: 20px;
+                    -moz-border-radius: 20px;
+                    border-radius: 20px;
+                    background: transparent;
+                }
+
+                &.active span {
+                    filter: Alpha(Opacity=100);
+                    opacity: 1;
+                    border-color: $brand-color;
+                    background-color: $brand-color;
+                }
+            }
+        }
+    }
+
+
+// Section 8 - Shop
+// --------------------------------------------------
+    .shop {
+        .post {
+            .align {
+                padding: 30px;
+                background-color: #f9f9f9;
+            }
+
+            h3 {
+                text-transform: uppercase;
+                font-size: 20px;
+                margin-bottom: 30px;
+
+                & + p {
+                    margin-bottom: 30px;
+                }
+            }
+
+            .btn + .btn {
+                margin-left: 10px;
+            }
+        }
+    }
+}

@@ -1,0 +1,161 @@
+/* -----------------------------------------------------------------------------
+// 5. Services Page 
+// ----------------------------------------------------------------------------- */
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Section Headline
+// - Section 1 - Hero Title
+// - Section 2 - Service Items 
+// - Section 3 - Testimonials 
+
+
+//
+// Services Page
+// --------------------------------------------------
+.services {
+
+// Section Headline
+// --------------------------------------------------
+    .section-headline {
+        margin-bottom: 30px;
+        text-align: center;
+
+        h3 {
+            text-transform: uppercase;
+
+            & + p {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+
+// Section 1 - Hero Title
+// --------------------------------------------------
+    .hero-title {
+        background-image: url(http://placehold.it/1895x500);
+    }
+
+
+// Section 2 - Service Items  
+// --------------------------------------------------
+    .service-items {
+        .post {
+            .align {
+                padding: 30px;
+                background-color: #f9f9f9;
+            }
+
+            h4 {
+                text-transform: uppercase;
+                margin-bottom: 30px;
+
+                & + p {
+                    margin-bottom: 30px;
+                }
+            }
+
+            .btn {
+                border-color: #4b4b4b;
+                color: #4b4b4b;
+                font-size: 12px;
+                padding: 12px 20px;
+
+                &:hover {
+                    background-color: #4b4b4b;
+                    color: #fff;
+                }
+            }
+
+            .btn + .btn {
+                margin-left: 10px;
+            }
+        }
+    }
+
+
+// Section 3 - Testimonials  
+// --------------------------------------------------
+    .testimonials {
+        background: url(http://placehold.it/1895x1200) center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+        .section-headline {
+            text-align: left;
+
+            h3 {
+               color: $brand-color; 
+            }
+
+            p {
+                text-transform: uppercase;
+                font-family: $headings-font-family;
+                color: #717171;
+            }
+        }
+
+        // pagination circles
+        .owl-pagination {
+            position: absolute;
+            right: 0;
+            left: initial;
+            top: 15px;
+
+            .owl-page {
+                display: block;
+
+                span {
+                    display: block;
+                    width: 12px;
+                    height: 12px;
+                    margin: 5px 7px;
+                    opacity: 1;
+                    border: 1px solid #fff;
+                    -webkit-border-radius: 20px;
+                    -moz-border-radius: 20px;
+                    border-radius: 20px;
+                    background: transparent;
+                }
+
+                &.active span {
+                    filter: Alpha(Opacity=100);
+                    opacity: 1;
+                    border-color: $brand-color;
+                    background-color: $brand-color;
+                }
+            }
+        }
+    }
+
+
+// Section 4 - Services  
+// --------------------------------------------------
+    .services-section {
+        .iconbox:hover {
+            background-color: $brand-color;
+            border-bottom-color: #d1af73;
+
+            .icon {
+                background-color: $heading-text-color;
+            }
+
+            h4,p {
+                color: $heading-text-color;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+

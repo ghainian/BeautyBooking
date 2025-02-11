@@ -1,0 +1,188 @@
+/* -----------------------------------------------------------------------------
+// 3. Gallery Page
+// ----------------------------------------------------------------------------- */
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Section Headline
+// - Section 1 - Hero Title
+// - Section 2 - Gallery Filtering
+// - Section 3 - Gallery Items
+
+
+//
+// Gallery Page
+// --------------------------------------------------
+.gallery {
+
+// Section Headline
+// --------------------------------------------------
+    .section-headline {
+        margin-bottom: 30px;
+        text-align: center;
+
+        h3 {
+            text-transform: uppercase;
+
+            & + p {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+
+// Section 1 - Hero Title
+// --------------------------------------------------
+    .hero-title {
+        background-image: url(http://placehold.it/1895x500);
+    }
+
+
+// Section 2 - Gallery Filtering
+// --------------------------------------------------
+    // gallery filtering
+    .gallery-filter {
+        padding: 20px 0;
+        background-color: #181818;
+
+        h5 {
+            display: inline-block;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        ul {
+            display: inline-block;
+            padding: 0;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        li {
+            display: inline-block;
+            margin-right: 15px;
+            color: #9c9c9c;
+            text-transform: uppercase;
+            font-family: $headings-font-family;
+
+            //  active category
+            &.active,
+            &.active:hover {
+                color: $brand-color;
+                cursor: auto;
+            }
+
+            // filtering links on hover
+            &:hover {
+                cursor: pointer;
+                color: #4b4b4b;
+            }
+        }
+    }
+
+
+// Section 3 - Gallery Items
+// --------------------------------------------------
+    .gallery-items {
+        .item {
+            position: relative;
+            width: 20%;
+            float: left;
+            @include transition(opacity, .5s);
+
+            .caption {
+                position: absolute;
+                bottom: 20px;
+                right: 0;
+                left: 0;
+                margin: 0 auto;
+                width: 100%;
+                padding: 20px 0;
+                background-color: #181818; // fallback
+                background-color: rgba(24, 24, 24, .75);
+                color: #fff;
+                font-family: $headings-font-family;
+                text-transform: uppercase;
+                text-align: center;
+                font-size: 18px;
+
+                p {
+                    margin: 0;
+                }
+            }
+
+            .meta {
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                text-align: center;
+                opacity: 0;
+                @include transition(opacity, .3s);
+
+                -webkit-transform: translateY(-50%);
+                -moz-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                -o-transform: translateY(-50%);
+                transform: translateY(-50%);
+
+                a {
+                    display: inline-block;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    font-size: 18px;
+                    border-radius: 5px;
+                    background-color: $brand-color;
+                    color: $heading-text-color;
+                    @include transition(background-color, .5s);
+
+                    & + a {
+                        margin-left: 5px;
+                    }
+
+                    &:hover {
+                        background-color: $heading-text-color;
+                        color: $brand-color;
+                    }
+                }
+            }
+
+            &:hover {
+                .meta {
+                    opacity: 1;
+                }
+            }
+        }
+
+        @media (max-width:992px){
+            .item {
+                width: 50%;
+            }
+        }
+
+        @media (max-width:768px) {
+            .item {
+                width: 100%;
+            }
+        }
+        
+        &.grid4 {
+            .item {
+                width: 25%;
+            }
+
+            @media (max-width:992px) {
+                .item {
+                    width: 50%;
+                }
+            }
+
+            @media (max-width:768px) {
+                .item {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

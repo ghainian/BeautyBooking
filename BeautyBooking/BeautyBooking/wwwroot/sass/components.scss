@@ -1,0 +1,32 @@
+@charset 'UTF-8';
+
+@import
+  'utils/utils';
+
+/* 
+// Table of content
+// -----------------------------------------------------------------------------
+// - 1. Buttons
+// - 2. Forms
+// - 3. Navbar
+// - 4. Cta
+// - 5. Teams
+// - 6. Testimonials
+// - 7. Pricing
+// - 8. Iconboxes
+// - 9. Progress
+// - 10. Galleries
+*/
+
+// Components
+@import
+  'components/buttons',
+  'components/forms',
+  'components/navbar',
+  'components/cta',
+  'components/teams',
+  'components/testimonials',
+  'components/pricing',
+  'components/iconboxes',
+  'components/progress',
+  'components/galleries';

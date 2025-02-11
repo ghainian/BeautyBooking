@@ -1,0 +1,346 @@
+/* -----------------------------------------------------------------------------
+// 8. Iconboxes 
+// ----------------------------------------------------------------------------- */
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Icon box Style 1
+// - Icon box Style 2
+// - Icon box Style 3
+// - Icon box Style 4
+// - Icon box Style 5
+// - Icon box Style 6
+// - Icon box Style 7
+
+
+// Icon Box Style 1
+// --------------------------------------------------
+.iconbox.style1 {
+    text-align: center;
+
+    .number {
+        font-family: $headings-font-family;
+        position: relative;
+        right: 90px;
+        top: 85px;
+        color: #f9f9f9;
+        font-size: 72px;
+        font-weight: 600;
+    }
+
+    .icon {
+        color: $brand-color;
+        font-size: 24px;
+    }
+
+    h4 {
+        text-transform: uppercase;
+    }
+
+    p {
+        padding: 0 30px;
+    }
+}
+
+
+// Icon Box Style 2
+// --------------------------------------------------
+.iconbox.style2 {
+    text-align: center;
+    .icon {
+        width: 160px;
+        margin: 0 auto 30px auto;
+        padding: 200px 0 30px 0;
+        color: #fff;
+        font-size: 36px;
+
+        // light blue background
+        &.lightblue {
+            background-color: #26a7ce;
+        }
+
+        // dark blue background
+        &.darkblue {
+            background-color: #5d7abb;
+        }
+
+        // purple background
+        &.purple {
+            background-color: #964ca8;
+        }
+
+        // pink background
+        &.pink {
+            background-color: #e30e8e;
+        }
+
+    }
+
+    h4 {
+        text-transform: uppercase;
+    }
+
+    p {
+        padding: 0 30px;
+    }
+}
+
+@media (max-width:992px){
+    .iconbox.style2 {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px){
+    .iconbox.style2 {
+        .icon {
+            padding: 30px 0;
+        }
+    }
+}
+
+
+// Icon Box Style 3
+// --------------------------------------------------
+.iconbox.style3 {
+    padding: 20px 35px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+
+    -webkit-transition: background-color .3s;
+            transition: background-color .3s;
+
+    .icon {
+        width: 85px;
+        height: 85px;
+        float: left;
+        margin-right: 20px;
+        border-radius: 100%;
+        text-align: center;
+        background-color: #fff;
+        color: #c4c4c4;
+
+        -webkit-transition: background-color .3s;
+                transition: background-color .3s;
+
+        i {
+            line-height: 85px;
+            font-size: 24px;
+        }
+    }
+
+    &:hover {
+        background-color: #4b4b4b;
+
+        h4 {
+            color: #fff;
+        }
+
+        .icon {
+            background-color: $brand-color;
+            color: #fff;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .iconbox.style3 {
+        text-align: center;
+        .icon {
+            float: none;
+            margin: 0 auto 20px auto;
+        }
+    }
+}
+
+
+// Icon Box Style 4
+// --------------------------------------------------
+
+// This style relies on a background image for the container
+// that holds the icons, so every time you use this type of icons
+// don't forget to put a background image for its container
+.icons-bg {
+    background: url(../img/icons-bg.jpg) center center;
+}
+
+.iconbox.style4 {
+    text-align: center;
+    .icon {
+        width: 85px;
+        height: 85px;
+        margin: 0 auto 30px auto;
+        border-radius: 100%;
+        text-align: center;
+        background: #fff; /* fallback */
+        background: rgba(255, 255, 255, .2);
+        color: #fff;
+
+        -webkit-transition: background .3s;
+                transition: background .3s;
+
+        i {
+            line-height: 85px;
+            font-size: 24px;
+        }
+    }
+
+    h4,
+    p {
+        color: #fff;
+        margin-bottom: 15px;
+    }
+
+    &:hover {
+        .icon {
+            background: rgba(255, 255, 255, 1);
+            color: $brand-color;
+        }
+    }
+}
+
+@media (max-width:992px){
+    .iconbox.style4 {
+        margin-bottom: 50px;
+    }
+}
+
+
+// Icon Box Style 5
+// --------------------------------------------------
+.iconbox.style5 {
+    padding: 0 45px 30px 45px;
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-bottom: 2px solid #f9f9f9;
+
+    @include transition(all, .3s);
+
+    .icon {
+        display: inline-block;
+        padding: 15px;
+        text-align: center;
+        background-color: $brand-color;
+
+        @include transition(background-color, .3s);
+    }
+
+    h4 {
+        text-transform: uppercase;
+        color: #4b4b4b;
+        margin: 30px 0;
+    }
+
+    &:hover {
+        border-color: #ececec;
+
+        .icon {
+            color: $brand-color
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .iconbox.style5 {
+        text-align: center;
+        .icon {
+            float: none;
+            margin: 0 auto 20px auto;
+        }
+    }
+}
+
+
+// Icon Box Style 6
+// --------------------------------------------------
+.iconbox.style6 {
+    padding: 80px 45px;
+    text-align: center;
+    background-color: #f9f9f9;
+
+    .icon {
+        text-align: center;
+        color: #fff;
+
+        i {
+            font-size: 48px;
+            -webkit-transition: color .5s;
+                    transition: color .5s;
+        }
+    }
+
+    h4 {
+        text-transform: uppercase;
+        color: #fff;
+        margin: 30px 0 15px 0;
+    }
+
+    p {
+        color: #fff;
+        opacity: .7;
+    }
+
+    // light blue background
+    &.lightblue {
+        background-color: #26a7ce;
+    }
+
+    // dark blue background
+    &.darkblue {
+        background-color: #5d7abb;
+    }
+
+    // purple background
+    &.purple {
+        background-color: #964ca8;
+    }
+}
+
+
+// Icon Box Style 7
+// --------------------------------------------------
+.iconbox.style7 {
+    padding: 20px 0;
+    margin-bottom: 20px;
+
+    -webkit-transition: background-color .3s;
+            transition: background-color .3s;
+
+    .icon {
+        width: 50px;
+        height: 50px;
+        float: left;
+        margin: 10px 20px 20px 0;
+        border-radius: 100%;
+        text-align: center;
+        background-color: #f9f9f9;
+        color: #c4c4c4;
+
+        -webkit-transition: background-color .3s;
+                transition: background-color .3s;
+
+        i {
+            line-height: 50px;
+            font-size: 18px;
+        }
+    }
+
+    &:hover {
+        .icon {
+            background-color: $brand-color;
+            color: #fff;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .iconbox.style3 {
+        text-align: center;
+        .icon {
+            float: none;
+            margin: 0 auto 20px auto;
+        }
+    }
+}

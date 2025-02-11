@@ -1,0 +1,159 @@
+/* -----------------------------------------------------------------------------
+// 6. Contact 
+// ----------------------------------------------------------------------------- */
+
+//
+// Table of content
+// -----------------------------------------------------------------------------
+// - Section Headline
+// - Section 1 - Contact Map
+// - Section 2 - Contact Info 
+// - Section 3 - Contact Form
+
+
+//
+// Contact Page
+// --------------------------------------------------
+.contact-page {
+
+// Section Headline
+// --------------------------------------------------
+    .section-headline {
+        margin-bottom: 30px;
+        text-align: center;
+
+        h3 {
+            text-transform: uppercase;
+
+            & + p {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+
+// Header
+// --------------------------------------------------
+    header {
+        z-index: 2;
+    }
+
+
+// Section 1 - Contact Map
+// --------------------------------------------------
+    .contact-map {
+        position: relative;
+        height: 400px;
+        background: url(http://placehold.it/1895x500) center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+        h2 {
+            position: absolute;
+            top: 70%;
+            right: 0;
+            left: 0;
+            text-align: center;
+            margin: 0 auto;
+            color: #fff;
+            font-size: 28px;
+            z-index: 10;
+            text-transform: uppercase;
+        }
+    }
+
+
+// Section 2 - Contact Info 
+// --------------------------------------------------
+    .directions {
+        .meta {
+            padding: 30px 30px 20px 30px;
+            background-color: #242424;
+            @include clearfix();
+        }
+
+        h4 {
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .btn {
+            color: #717171;
+            border-color: #717171;
+            padding: 10px 18px;
+            font-size: 12px;
+
+            &:hover {
+                background-color: $brand-color;
+                color: #fff;
+            }
+        }
+    }
+
+    .contact-info {
+        margin-bottom: 30px;
+
+        .item {
+            h3 {
+                font-size: 18px;
+                text-transform: uppercase;
+                margin-bottom: 30px;
+            }
+
+            .list {
+                margin-bottom: 30px;
+
+                li {
+                    margin-bottom: 8px;
+                }
+            }
+        }
+
+        @media (max-width:992px) {
+            .item {
+                margin-bottom: 30px;
+            }
+        }
+    }
+
+    @media (min-width:992px) {
+        .contact-info, 
+        .contact-form {
+            padding-left: 40px;
+        }
+    }
+
+
+// Section 3 - Contact Form
+// --------------------------------------------------
+    .contact-form {
+        h2 {
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .form-control {
+            background-color: #f9f9f9;
+        }
+
+        textarea {
+            height: 200px;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
