@@ -4,18 +4,18 @@ using System.Diagnostics;
 
 namespace BeautyBooking.Controllers
 {
-    public class AboutController : Controller
+    public class PriceController : Controller
     {
-        private readonly ILogger<AboutController> _logger;
+        private readonly ILogger<PriceController> _logger;
 
-        public AboutController(ILogger<AboutController> logger)
+        public PriceController(ILogger<PriceController> logger)
         {
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View("About");
+            return View("Price");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
