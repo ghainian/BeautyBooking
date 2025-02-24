@@ -66,8 +66,8 @@
             $('.splash-slider').owlCarousel({
                 singleItem: true,
                 transitionStyle: 'fade',
-                slideSpeed: 1000,
-                autoPlay: 5000,
+                slideSpeed: 500000,
+                autoPlay: 50000,
                 mouseDrag: false,
                 pagination: true,
                 navigation: false
@@ -78,8 +78,8 @@
             $('.testimonials-slider').owlCarousel({
                 singleItem: true,
                 transitionStyle: 'fade',
-                slideSpeed: 1000,
-                autoPlay: 5000,
+                slideSpeed: 500000,
+                autoPlay: 50000,
                 mouseDrag: false,
                 pagination: true,
                 navigation: false
@@ -90,8 +90,8 @@
         if($('.gallery-slider').length > 0){
             $('.gallery-slider').owlCarousel({
                 singleItem: true,
-                slideSpeed: 1000,
-                autoPlay: 5000,
+                slideSpeed: 500000,
+                autoPlay: 50000,
                 mouseDrag: false,
                 pagination: true
             });
@@ -104,8 +104,8 @@
                 itemsDesktopSmall: [992,3],
                 itemsTablet: [768,3],
                 itemsMobile: [479,1],
-                slideSpeed: 1000,
-                autoPlay: 5000,
+                slideSpeed: 500000,
+                autoPlay: 50000,
                 pagination: false,
                 navigation: true,
                 navigationText: ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"]
@@ -117,8 +117,8 @@
             $('.popup-video ').owlCarousel({
                 singleItem: true,
                 transitionStyle: 'fade',
-                slideSpeed: 1000,
-                autoPlay: 5000,
+                slideSpeed: 500000,
+                autoPlay: 50000,
                 mouseDrag: false,
                 pagination: true,
                 navigation: false
