@@ -10,6 +10,7 @@ namespace BeautyBooking.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
+            //Just a dummy comment
             _logger = logger;
         }
 
