@@ -3,13 +3,34 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Anova | Homepage</title>
+    <title>Frisør København | Anova Salon – Dame & Herreklip</title>
+    <meta name="description" content="Anova Salon på Amagerbrogade i København tilbyder professionel dameklip, herreklip og børneklip. Book tid online i dag.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://www.anova.dk/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Frisør København | Anova Salon – Dame & Herreklip">
+    <meta property="og:description" content="Book tid hos Anova Salon på Amagerbrogade i København. Professionel frisør for mænd, kvinder og børn.">
+    <meta property="og:image" content="https://www.anova.dk/img/og-image.jpg">
+    <meta property="og:url" content="https://www.anova.dk/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Frisør København | Anova Salon – Dame & Herreklip">
+    <meta name="twitter:description" content="Bestil tid online hos Anova Salon – din frisør på Amagerbrogade, København.">
+    <meta name="twitter:image" content="https://www.anova.dk/img/og-image.jpg">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- FAVICONS -->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
 
     <!-- FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i|Oswald:400,700" rel="stylesheet">
@@ -23,6 +44,40 @@
 
     <!-- MODERNIZR -->
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    
+    <script type="application/ld+json">
+        {
+          "name": "Anova Salon",
+          "image": "https://www.anova.dk/img/logo.png",
+          "address": {
+            "streetAddress": "Amagerbrogade 219",
+            "addressLocality": "København S",
+            "postalCode": "2300",
+            "addressCountry": "DK"
+          },
+          "telephone": "+45 41423333",
+          "url": "https://www.anova.dk/"
+        }
+    </script>
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZ2745VQX3X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-CZ2745VQX3X');
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17428130272"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'AW-17428130272');
+    </script>
 </head>
 <body class="homepage">
     <!--[if lt IE 8]>
@@ -55,12 +110,12 @@
                 <!-- NAVBAR LINKS -->
                 <div class="collapse navbar-collapse navbar-right" id="navbar">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="home">Home</a></li>
-                        <li><a href="price">Priser</a></li>
+                        <li class="active"><a href="home" style="font-weight: bold;font-size: 2.5rem;">Home</a></li>
+                        <li><a href="price" style="font-weight: bold;font-size: 2.5rem;">Priser</a></li>
                         @* <li><a href="gallery">Gallery</a></li> *@
                         @*<li><a href="services">Services</a></li>*@
                         @* <li><a href="contact">Kontakt</a></li> *@
-                        <li><a href="book">Bestil Online</a></li>
+                        <li><a href="book" style="font-weight: bold;font-size: 2.5rem;">Bestil Online</a></li>
                     </ul>
                 </div>
             </div>
@@ -80,7 +135,7 @@
                 <img src="/img/home/background1.png" alt="Background Image">
             </div>
 
-           @*  <!-- SLIDE -->
+            @*  <!-- SLIDE -->
             <div>
                 <img src="/img/home/background2.png" alt="Background Image">
             </div> *@
@@ -89,17 +144,17 @@
         <div class="container">
             <div class="row">
                 <div class="align">
-                    <a href="book">
+                    <a href="book" style="font-weight: bold;font-size: 2.5rem;">
                         <img src="img/logo-big.png" alt="Bestil tid med Anova">
                     </a>
-                    
+
                 </div>
             </div><!-- // .row -->
         </div><!-- // .container -->
     </section>
     <!-- // HERO SPLASH -->
     <!-- SECTION 2 - CTA -->
-   <div class="cta cta-colored space">
+    <div class="cta cta-colored space">
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -111,7 +166,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- // SECTION 2 -->
     <!-- SECTION 3 - WELCOME -->
     <section class="welcome space">
@@ -145,7 +200,7 @@
     </section>
     <!-- SECTION 3 -->
     <!-- SECTION 4 - COUNTERS -->
-     <section class="counters space">
+    <section class="counters space">
         <div class="container">
             <div class="row">
                 <div class="section-headline">
@@ -191,7 +246,7 @@
                 </div>
             </div>
         </div>
-    </section> 
+    </section>
     <!-- // SECTION 4 -->
     <!-- SECTION 5 - SERVICES -->
     @* <section class="services-section space">
@@ -275,7 +330,7 @@
     </section> *@ 
     <!-- // SECTION 5 -->
     <!-- SECTION 6 - GALLERY -->
-     @* <section class="gallery">
+    @* <section class="gallery">
         <h3 class="hidden">Gallery Items</h3>
         <div class="container-fluid">
             <div class="row">
@@ -334,7 +389,7 @@
     </section> *@ 
     <!-- // SECTION 6 -->
     <!-- SECTION 7 - TESTIMONIALS -->
-     <section class="testimonials space" style="display:none;">
+    <section class="testimonials space" style="display:none;">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
@@ -377,7 +432,7 @@
                 </div>
             </div>
         </div>
-    </section> 
+    </section>
     <!-- // SECTION 7 -->
     <!-- SECTION 8 - SHOP -->
     @* <section class="shop space" style="display:none;">
@@ -430,7 +485,7 @@
                         <span class="contact"><i class="fa fa-phone"></i>+45 41 42 33 33</span>
                     </div>
                     <div class="col-md-4 space-mb">
-                        <h4  style="display:none;">Photo Stream</h4>
+                        <h4 style="display:none;">Photo Stream</h4>
                         <div class="stream">
                             @* <a href="gallery-detail.html"><img src="http://dummyimage.com/200x200" alt="About the image"></a> *@
                             @* <a href="gallery-detail.html"><img src="http://dummyimage.com/200x200" alt="About the image"></a> *@

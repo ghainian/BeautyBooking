@@ -18,6 +18,11 @@ namespace BeautyBooking.Controllers
             return View("book");
         }
 
+        public IActionResult Elev()
+        {
+            return View("elev");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
