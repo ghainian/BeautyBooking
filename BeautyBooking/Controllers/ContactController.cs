@@ -8,6 +8,7 @@ namespace BeautyBooking.Controllers
     {
         private readonly ILogger<ContactController> _logger;
 
+//Dummy change to test git pull request
         public ContactController(ILogger<ContactController> logger)
         {
             _logger = logger;

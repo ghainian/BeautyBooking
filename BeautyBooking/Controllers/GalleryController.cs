@@ -12,7 +12,7 @@ namespace BeautyBooking.Controllers
         {
             _logger = logger;
         }
-
+//Dummy change to test git pull request
         public IActionResult Index()
         {
             return View("Gallery");
