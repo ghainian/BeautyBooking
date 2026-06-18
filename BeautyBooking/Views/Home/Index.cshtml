@@ -135,25 +135,10 @@
             </div>
         </section>
 
-        <section id="gallery" class="section-block gallery-block">
-            <div class="container">
-                <div class="section-headline-modern">
-                    <p class="eyebrow">@T("GalleryEyebrow")</p>
-                    <h2>@T("GalleryTitle")</h2>
-                </div>
-                <div class="gallery-grid">
-                    <img src="/img/home/gallery1.png" alt="Hair style example 1">
-                    <img src="/img/home/gallery2.png" alt="Hair style example 2">
-                    <img src="/img/home/gallery3.png" alt="Hair style example 3">
-                    <img src="/img/home/gallery4.png" alt="Hair style example 4">
-                </div>
-            </div>
-        </section>
-
         <section id="hours-contact" class="section-block contact-hours-block">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 hours-column">
                         <p class="eyebrow">@T("HoursEyebrow")</p>
                         <h2>@T("HoursTitle")</h2>
                         <ul class="hours-list">
@@ -170,14 +155,18 @@
                         <p class="eyebrow">@T("ContactEyebrow")</p>
                         <h3>@T("ContactName")</h3>
                         <p>@T("ContactAddress")</p>
-                        <p><a href="tel:+4541423333">+45 41 42 33 33</a></p>
+                        <p class="contact-phone"><a href="tel:+4541423333">+45 41 42 33 33</a></p>
+                        <p class="contact-note">Hvis vi ikke tager telefonen med det samme, ringer vi tilbage hurtigst muligt.</p>
                         <p>
                             <a class="social-link" href="https://www.instagram.com/salon_anova_?igsh=a3ZrMGF1YWxicnMy" target="_blank" rel="noopener">
                                 <i class="fa fa-instagram" aria-hidden="true"></i>
                                 <span>@T("Instagram")</span>
                             </a>
                         </p>
-                        <a class="btn btn-default btn-dark" href="https://maps.google.com/?q=Amagerbrogade+219,+2300+Kobenhavn+S" target="_blank" rel="noopener">@T("FindWay")</a>
+                        <div class="contact-card-actions">
+                            <a class="btn btn-default btn-dark" href="https://maps.google.com/?q=Amagerbrogade+219,+2300+Kobenhavn+S" target="_blank" rel="noopener">@T("FindWay")</a>
+                            <a class="btn btn-default btn-gold" href="/book">@T("BookingCta")</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,7 +177,23 @@
                 <div class="booking-panel">
                     <h2>@T("BookingTitle")</h2>
                     <p>@T("BookingText")</p>
+                    <p class="booking-policy">Afbestilling skal ske senest 24 timer før. Ved senere aflysning kan der opkræves gebyr.</p>
                     <a href="/book" class="btn btn-default btn-gold">@T("BookingCta")</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="section-block gallery-block">
+            <div class="container">
+                <div class="section-headline-modern">
+                    <p class="eyebrow">@T("GalleryEyebrow")</p>
+                    <h2>@T("GalleryTitle")</h2>
+                </div>
+                <div class="gallery-grid">
+                    <img src="/img/home/gallery1.png" alt="Hair style example 1">
+                    <img src="/img/home/gallery2.png" alt="Hair style example 2">
+                    <img src="/img/home/gallery3.png" alt="Hair style example 3">
+                    <img src="/img/home/gallery4.png" alt="Hair style example 4">
                 </div>
             </div>
         </section>
