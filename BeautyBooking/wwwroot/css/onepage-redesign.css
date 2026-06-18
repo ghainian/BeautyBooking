@@ -413,6 +413,10 @@ h4 {
     color: #ac957c;
 }
 
+.mobile-booking-bar {
+    display: none;
+}
+
 @media (max-width: 991px) {
     .site-nav {
         background: #0f0c0a;
@@ -453,7 +457,68 @@ h4 {
 }
 
 @media (max-width: 575px) {
+    .onepage-home {
+        padding-bottom: 78px;
+    }
+
     .hero-brand {
         white-space: normal;
+    }
+
+    .mobile-booking-bar {
+        position: fixed;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        z-index: 2000;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        padding: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: 16px;
+        background: linear-gradient(120deg, #15110e, #211a15 62%, #2c221a);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    .mobile-booking-bar a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 14px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+    }
+
+    .mobile-booking-btn {
+        background: var(--tone-gold);
+        border: 1px solid var(--tone-gold);
+        color: #fff;
+    }
+
+    .mobile-booking-btn:hover,
+    .mobile-booking-btn:focus {
+        color: #fff;
+        background: #9f7445;
+        border-color: #9f7445;
+    }
+
+    .mobile-call-btn {
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        color: #f7ece0;
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    .mobile-call-btn:hover,
+    .mobile-call-btn:focus {
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.85);
+        background: rgba(255, 255, 255, 0.1);
     }
 }
