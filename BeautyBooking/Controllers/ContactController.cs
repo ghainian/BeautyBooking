@@ -15,7 +15,7 @@ namespace BeautyBooking.Controllers
 
         public IActionResult Index()
         {
-            return View("contact");
+            return Redirect("/home#hours-contact");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
