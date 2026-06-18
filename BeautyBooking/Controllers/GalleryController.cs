@@ -15,7 +15,7 @@ namespace BeautyBooking.Controllers
 
         public IActionResult Index()
         {
-            return View("Gallery");
+            return Redirect("/home#gallery");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

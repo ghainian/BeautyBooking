@@ -14,6 +14,46 @@
 
     $(document).on('ready', function() {  
 
+        // One-page nav polish
+        // ----------------------------------------
+        var $siteNav = $('#top-nav');
+
+        if($siteNav.length > 0){
+            var setNavState = function() {
+                $siteNav.toggleClass('scrolled', $(window).scrollTop() > 20);
+            };
+
+            setNavState();
+            $(window).on('scroll', setNavState);
+        }
+
+        // Smooth scroll for in-page anchors
+        // ----------------------------------------
+        $('a[href^="#"]').on('click', function(e){
+            var targetId = $(this).attr('href');
+
+            if(!targetId || targetId === '#'){
+                return;
+            }
+
+            var $target = $(targetId);
+            if($target.length === 0){
+                return;
+            }
+
+            e.preventDefault();
+
+            var navHeight = $siteNav.length > 0 ? $siteNav.outerHeight() : 0;
+            $('html, body').animate({
+                scrollTop: $target.offset().top - navHeight + 1
+            }, 500);
+
+            if($('#navbar').hasClass('in')){
+                $('#navbar').collapse('hide');
+                $('.navbar-toggle').removeClass('active');
+            }
+        });
+
         // Animating the navbar toggle
         // ----------------------------------------
         $('.navbar-toggle').on('click', function () {
