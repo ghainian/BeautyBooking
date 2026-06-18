@@ -1,13 +1,17 @@
+@using System.Globalization
+@using BeautyBooking.Localization
 @{
     Layout = null;
+    var currentLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    Func<string, string> T = key => SiteText.Get(key, currentLanguage);
 }
 <!doctype html>
-<html class="no-js" lang="da">
+<html class="no-js" lang="@currentLanguage">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Anova Salon | Frisor i Kobenhavn</title>
-    <meta name="description" content="Anova Salon pa Amagerbrogade i Kobenhavn tilbyder professionel dameklip, herreklip og borneklip. Book tid online i dag.">
+    <title>@T("MetaTitle")</title>
+    <meta name="description" content="@T("MetaDescription")">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="canonical" href="https://www.anova.dk/">
 
@@ -25,7 +29,7 @@
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/pages.css">
-    <link rel="stylesheet" href="/css/onepage-redesign.css?v=20260618-8">
+    <link rel="stylesheet" href="/css/onepage-redesign.css?v=20260618-9">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
@@ -46,12 +50,16 @@
 
                 <div class="collapse navbar-collapse navbar-right" id="navbar">
                     <ul class="nav navbar-nav">
-                        <li><a href="#hero">Home</a></li>
-                        <li><a href="#about">Om Os</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#gallery">Galleri</a></li>
-                        <li><a href="#hours-contact">Kontakt</a></li>
-                        <li class="nav-cta"><a href="/book">Bestil Online</a></li>
+                        <li><a href="#hero">@T("NavHome")</a></li>
+                        <li><a href="#about">@T("NavAbout")</a></li>
+                        <li><a href="#services">@T("NavServices")</a></li>
+                        <li><a href="#gallery">@T("NavGallery")</a></li>
+                        <li><a href="#hours-contact">@T("NavContact")</a></li>
+                        <li class="nav-cta"><a href="/book">@T("NavBook")</a></li>
+                        <li class="language-switcher"><a href="/home?culture=da&ui-culture=da">DA</a></li>
+                        <li class="language-switcher"><a href="/home?culture=en&ui-culture=en">EN</a></li>
+                        <li class="language-switcher"><a href="/home?culture=fr&ui-culture=fr">FR</a></li>
+                        <li class="language-switcher"><a href="/home?culture=de&ui-culture=de">DE</a></li>
                     </ul>
                 </div>
             </div>
@@ -63,15 +71,12 @@
             <div class="hero-backdrop"></div>
             <div class="container">
                 <div class="hero-content">
-                    <p class="eyebrow hero-brand">SALON ANOVA</p>
-                    <h1>Eksklusiv haircare med fokus pa detaljer</h1>
-                    <p>
-                        Step ind i et roligt rum for moderne klip, styling og personlig service.
-                        Vi kombinerer klassisk handvaerk med nutidigt look i hjertet af Amager.
-                    </p>
+                    <p class="eyebrow hero-brand">@T("HeroBrand")</p>
+                    <h1>@T("HeroTitle")</h1>
+                    <p>@T("HeroLead")</p>
                     <div class="hero-actions">
-                        <a href="/book" class="btn btn-default btn-gold">Bestil tid</a>
-                        <a href="#services" class="btn btn-bordered btn-light">Se services</a>
+                        <a href="/book" class="btn btn-default btn-gold">@T("HeroBook")</a>
+                        <a href="#services" class="btn btn-bordered btn-light">@T("HeroViewServices")</a>
                     </div>
                 </div>
             </div>
@@ -84,18 +89,11 @@
                         <img src="/img/gallery/gallery1.png" class="feature-image" alt="Salon interior">
                     </div>
                     <div class="col-md-6">
-                        <p class="eyebrow">About us</p>
-                        <h2>Passion for detail i hver behandling</h2>
-                        <p>
-                            Velkommen til Anova, Salon din nye hardestination i Kobenhavn.
-                            Uanset om du er mand, kvinde, barn eller senior, tilpasser vi hver behandling
-                            til dit behov og din stil.
-                        </p>
-                        <p>
-                            Vores erfarne stylister arbejder med produkter af hoj kvalitet i afslappede
-                            omgivelser, sa du gar herfra med et look der holder.
-                        </p>
-                        <a href="/book" class="btn btn-default btn-gold">Book appointment</a>
+                        <p class="eyebrow">@T("AboutEyebrow")</p>
+                        <h2>@T("AboutTitle")</h2>
+                        <p>@T("AboutText1")</p>
+                        <p>@T("AboutText2")</p>
+                        <a href="/book" class="btn btn-default btn-gold">@T("AboutBook")</a>
                     </div>
                 </div>
             </div>
@@ -104,33 +102,33 @@
         <section id="services" class="section-block services-block">
             <div class="container">
                 <div class="section-headline-modern">
-                    <p class="eyebrow">Our services</p>
-                    <h2>Populaere behandlinger</h2>
+                    <p class="eyebrow">@T("ServicesEyebrow")</p>
+                    <h2>@T("ServicesTitle")</h2>
                 </div>
                 <div class="service-grid">
                     <article class="service-card">
-                        <h3>Herreklip</h3>
-                        <p>Klassisk eller moderne herreklip med professionel finish.</p>
-                        <div class="meta"><span>30 min</span><strong>369 DKK</strong></div>
-                        <a href="/book">Bestil Online</a>
+                        <h3>@T("Service1Name")</h3>
+                        <p>@T("Service1Text")</p>
+                        <div class="meta"><span>@T("Service1Meta")</span><strong>@T("Service1Price")</strong></div>
+                        <a href="/book">@T("BookOnline")</a>
                     </article>
                     <article class="service-card">
-                        <h3>Dameklip</h3>
-                        <p>Skraddersyet dameklip med fokus pa form, volumen og stil.</p>
-                        <div class="meta"><span>45 min</span><strong>fra 459 DKK</strong></div>
-                        <a href="/book">Bestil Online</a>
+                        <h3>@T("Service2Name")</h3>
+                        <p>@T("Service2Text")</p>
+                        <div class="meta"><span>@T("Service2Meta")</span><strong>@T("Service2Price")</strong></div>
+                        <a href="/book">@T("BookOnline")</a>
                     </article>
                     <article class="service-card">
-                        <h3>Born under 12</h3>
-                        <p>Tryg og rolig klipning med tid til de mindste kunder.</p>
-                        <div class="meta"><span>25 min</span><strong>239 DKK</strong></div>
-                        <a href="/book">Bestil Online</a>
+                        <h3>@T("Service3Name")</h3>
+                        <p>@T("Service3Text")</p>
+                        <div class="meta"><span>@T("Service3Meta")</span><strong>@T("Service3Price")</strong></div>
+                        <a href="/book">@T("BookOnline")</a>
                     </article>
                     <article class="service-card">
-                        <h3>Styling</h3>
-                        <p>Styling til event, hverdag eller et hurtigt polish af dit look.</p>
-                        <div class="meta"><span>30 min</span><strong>fra 299 DKK</strong></div>
-                        <a href="/book">Bestil Online</a>
+                        <h3>@T("Service4Name")</h3>
+                        <p>@T("Service4Text")</p>
+                        <div class="meta"><span>@T("Service4Meta")</span><strong>@T("Service4Price")</strong></div>
+                        <a href="/book">@T("BookOnline")</a>
                     </article>
                 </div>
             </div>
@@ -139,8 +137,8 @@
         <section id="gallery" class="section-block gallery-block">
             <div class="container">
                 <div class="section-headline-modern">
-                    <p class="eyebrow">Gallery</p>
-                    <h2>Udvalgte resultater</h2>
+                    <p class="eyebrow">@T("GalleryEyebrow")</p>
+                    <h2>@T("GalleryTitle")</h2>
                 </div>
                 <div class="gallery-grid">
                     <img src="/img/home/gallery1.png" alt="Hair style example 1">
@@ -155,30 +153,30 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <p class="eyebrow">Opening hours</p>
-                        <h2>Vi har abent naesten hele ugen</h2>
+                        <p class="eyebrow">@T("HoursEyebrow")</p>
+                        <h2>@T("HoursTitle")</h2>
                         <ul class="hours-list">
-                            <li><span>Mandag</span><strong>09:00 - 18:00</strong></li>
-                            <li><span>Tirsdag</span><strong>09:00 - 18:00</strong></li>
-                            <li><span>Onsdag</span><strong>09:00 - 18:00</strong></li>
-                            <li><span>Torsdag</span><strong>09:00 - 18:00</strong></li>
-                            <li><span>Fredag</span><strong>09:00 - 18:00</strong></li>
-                            <li><span>Lordag</span><strong>09:00 - 17:00</strong></li>
-                            <li><span>Sondag</span><strong>Lukket</strong></li>
+                            <li><span>@T("Mon")</span><strong>09:00 - 18:00</strong></li>
+                            <li><span>@T("Tue")</span><strong>09:00 - 18:00</strong></li>
+                            <li><span>@T("Wed")</span><strong>09:00 - 18:00</strong></li>
+                            <li><span>@T("Thu")</span><strong>09:00 - 18:00</strong></li>
+                            <li><span>@T("Fri")</span><strong>09:00 - 18:00</strong></li>
+                            <li><span>@T("Sat")</span><strong>09:00 - 17:00</strong></li>
+                            <li><span>@T("Sun")</span><strong>@T("Closed")</strong></li>
                         </ul>
                     </div>
                     <div class="col-md-6 contact-info-card">
-                        <p class="eyebrow">Contact</p>
-                        <h3>Salon Anova</h3>
-                        <p>Amagerbrogade 219, 2300 Kobenhavn S</p>
+                        <p class="eyebrow">@T("ContactEyebrow")</p>
+                        <h3>@T("ContactName")</h3>
+                        <p>@T("ContactAddress")</p>
                         <p><a href="tel:+4541423333">+45 41 42 33 33</a></p>
                         <p>
                             <a class="social-link" href="https://www.instagram.com/salon_anova_?igsh=a3ZrMGF1YWxicnMy" target="_blank" rel="noopener">
                                 <i class="fa fa-instagram" aria-hidden="true"></i>
-                                <span>Instagram</span>
+                                <span>@T("Instagram")</span>
                             </a>
                         </p>
-                        <a class="btn btn-default btn-dark" href="https://maps.google.com/?q=Amagerbrogade+219,+2300+Kobenhavn+S" target="_blank" rel="noopener">Find vej</a>
+                        <a class="btn btn-default btn-dark" href="https://maps.google.com/?q=Amagerbrogade+219,+2300+Kobenhavn+S" target="_blank" rel="noopener">@T("FindWay")</a>
                     </div>
                 </div>
             </div>
@@ -187,9 +185,9 @@
         <section id="booking" class="section-block booking-strip">
             <div class="container">
                 <div class="booking-panel">
-                    <h2>Klar til et nyt look?</h2>
-                    <p>Book din tid online pa under et minut.</p>
-                    <a href="/book" class="btn btn-default btn-gold">Bestil Online</a>
+                    <h2>@T("BookingTitle")</h2>
+                    <p>@T("BookingText")</p>
+                    <a href="/book" class="btn btn-default btn-gold">@T("BookingCta")</a>
                 </div>
             </div>
         </section>
@@ -200,24 +198,24 @@
             <div class="footer-grid">
                 <div>
                     <img src="/img/logo-gold.png" alt="Anova logo" class="footer-logo">
-                    <p>Eksklusiv craftsmanship og wellness i hjertet af Amager.</p>
+                    <p>@T("FooterTagline")</p>
                 </div>
                 <div>
-                    <h4>Quick links</h4>
+                    <h4>@T("FooterQuickLinks")</h4>
                     <ul>
-                        <li><a href="#hero">Home</a></li>
-                        <li><a href="#about">Om Os</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#hours-contact">Kontakt</a></li>
+                        <li><a href="#hero">@T("NavHome")</a></li>
+                        <li><a href="#about">@T("NavAbout")</a></li>
+                        <li><a href="#services">@T("NavServices")</a></li>
+                        <li><a href="#hours-contact">@T("NavContact")</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Book</h4>
-                    <p>Book direkte pa vores interne bookingside.</p>
-                    <a href="/book" class="footer-book-link">Ga til booking</a>
+                    <h4>@T("FooterBook")</h4>
+                    <p>@T("FooterBookText")</p>
+                    <a href="/book" class="footer-book-link">@T("FooterGoBooking")</a>
                 </div>
             </div>
-            <p class="copyright">© 2026 Anova Salon. All rights reserved.</p>
+            <p class="copyright">@T("FooterCopyright")</p>
         </div>
     </footer>
 

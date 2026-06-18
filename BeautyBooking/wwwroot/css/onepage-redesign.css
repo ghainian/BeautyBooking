@@ -72,6 +72,15 @@ html {
     border-radius: 999px;
 }
 
+.site-nav .navbar-nav > li.language-switcher > a {
+    margin: 20px 0 0 8px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 8px;
+    font-size: 11px;
+    line-height: 1;
+}
+
 .hero-premium {
     position: relative;
     min-height: 92vh;
@@ -415,6 +424,13 @@ h4 {
 
     .site-nav .navbar-nav > li > a {
         margin: 0;
+    }
+
+    .site-nav .navbar-nav > li.language-switcher > a {
+        margin: 0;
+        border-radius: 0;
+        border: none;
+        padding: 15px 20px;
     }
 
     .hero-content {
