@@ -33,6 +33,9 @@ jobs:
       - name: dotnet publish
         run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o ${{ env.PUBLISH_PATH }}
 
+      - name: Inspect published output
+        run: ls -la ${{ env.PUBLISH_PATH }}
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -55,6 +58,9 @@ jobs:
         with:
           name: .net-app
           path: ${{ env.PUBLISH_PATH }}
+
+      - name: Inspect downloaded artifact
+        run: ls -la ${{ env.PUBLISH_PATH }}
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -68,6 +74,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'Anova'
-          slot-name: 'Production'
           package: ${{ env.PUBLISH_PATH }}
           
