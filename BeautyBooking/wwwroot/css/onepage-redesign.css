@@ -181,7 +181,8 @@ h4 {
 
 .about-block h2,
 .section-headline-modern h2,
-.contact-hours-block h2,
+.hours-block h2,
+.contact-block h2,
 .booking-panel h2 {
     font-size: clamp(34px, 4vw, 52px);
     line-height: 1.03;
@@ -297,17 +298,24 @@ h4 {
     box-shadow: 0 18px 38px rgba(18, 12, 8, 0.22);
 }
 
-.contact-hours-block {
+.hours-block,
+.contact-block {
     background: var(--tone-surface);
     color: var(--tone-dark);
 }
 
-.contact-hours-block h2,
-.contact-hours-block h3,
-.contact-hours-block p,
-.contact-hours-block span,
-.contact-hours-block strong,
-.contact-hours-block a {
+.hours-block h2,
+.hours-block h3,
+.hours-block p,
+.hours-block span,
+.hours-block strong,
+.hours-block a,
+.contact-block h2,
+.contact-block h3,
+.contact-block p,
+.contact-block span,
+.contact-block strong,
+.contact-block a {
     color: var(--tone-dark);
 }
 
@@ -357,6 +365,10 @@ h4 {
 
 .contact-info-card .social-link i {
     font-size: 18px;
+}
+
+.contact-block .contact-info-card {
+    margin-top: 0;
 }
 
 .booking-strip {
