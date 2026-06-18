@@ -18,6 +18,12 @@ html {
     color: var(--tone-dark);
 }
 
+.onepage-home a:not(.btn):hover,
+.onepage-home a:not(.btn):focus {
+    color: #f5c45a;
+    text-decoration: none;
+}
+
 .site-nav-wrap {
     position: sticky;
     top: 0;
@@ -314,6 +320,12 @@ h4 {
     color: #f8d4ad;
 }
 
+.contact-info-card a:hover,
+.contact-info-card a:focus {
+    color: #f5c45a;
+    text-decoration: none;
+}
+
 .contact-info-card .social-link {
     display: inline-flex;
     align-items: center;
@@ -374,6 +386,14 @@ h4 {
 .site-footer a,
 .footer-book-link {
     color: #e5c6a5;
+}
+
+.site-footer a:hover,
+.site-footer a:focus,
+.footer-book-link:hover,
+.footer-book-link:focus {
+    color: #f5c45a;
+    text-decoration: none;
 }
 
 .copyright {
