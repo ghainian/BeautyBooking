@@ -27,6 +27,36 @@
             $(window).on('scroll', setNavState);
         }
 
+        // Mobile sticky book/call panel visibility
+        // ----------------------------------------
+        var $mobileStickyPanel = $('.mobile-sticky-panel');
+
+        if($mobileStickyPanel.length > 0){
+            var lastScrollTop = $(window).scrollTop();
+
+            var setMobileStickyPanelState = function() {
+                var isMobile = window.matchMedia('(max-width: 767px)').matches;
+                var currentScrollTop = $(window).scrollTop();
+
+                if(!isMobile){
+                    $mobileStickyPanel.removeClass('is-visible');
+                    lastScrollTop = currentScrollTop;
+                    return;
+                }
+
+                if(currentScrollTop < 40){
+                    $mobileStickyPanel.removeClass('is-visible');
+                } else if(currentScrollTop > lastScrollTop){
+                    $mobileStickyPanel.addClass('is-visible');
+                }
+
+                lastScrollTop = currentScrollTop;
+            };
+
+            setMobileStickyPanelState();
+            $(window).on('scroll resize orientationchange', setMobileStickyPanelState);
+        }
+
         // Smooth scroll for in-page anchors
         // ----------------------------------------
         $('a[href^="#"]').on('click', function(e){
