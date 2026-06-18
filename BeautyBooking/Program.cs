@@ -17,8 +17,7 @@ var localizationOptions = new RequestLocalizationOptions()
 localizationOptions.RequestCultureProviders = new IRequestCultureProvider[]
 {
     new QueryStringRequestCultureProvider(),
-    new CookieRequestCultureProvider(),
-    new AcceptLanguageHeaderRequestCultureProvider()
+    new CookieRequestCultureProvider()
 };
 
 // Configure the HTTP request pipeline.
