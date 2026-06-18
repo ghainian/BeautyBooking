@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
 
 env:
+  APP_NAME: Anova
   PROJECT_PATH: ./BeautyBooking/BeautyBooking.csproj
   PUBLISH_PATH: ./published-app
   PACKAGE_PATH: ./release.zip
@@ -80,10 +81,34 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1B679559F80F431FB574B784BC64B7C0 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2E4062DB4EB94E93814BD7AEBD932298 }}
 
+      - name: Resolve web app configuration
+        id: resolve-app
+        shell: bash
+        run: |
+          RG=$(az webapp list --query "[?name=='${{ env.APP_NAME }}'] | [0].resourceGroup" -o tsv)
+          if [ -z "$RG" ]; then
+            echo "Unable to resolve resource group for app ${{ env.APP_NAME }}"
+            exit 1
+          fi
+          echo "resource_group=$RG" >> "$GITHUB_OUTPUT"
+          az webapp show --name "${{ env.APP_NAME }}" --resource-group "$RG" --query "{name:name,defaultHostName:defaultHostName,state:state,linuxFxVersion:siteConfig.linuxFxVersion,appCommandLine:siteConfig.appCommandLine}" -o json
+
+      - name: Enforce app settings for package deployment
+        shell: bash
+        run: |
+          az webapp config appsettings set \
+            --name "${{ env.APP_NAME }}" \
+            --resource-group "${{ steps.resolve-app.outputs.resource_group }}" \
+            --settings WEBSITE_RUN_FROM_PACKAGE=1 SCM_DO_BUILD_DURING_DEPLOYMENT=false WEBSITES_ENABLE_APP_SERVICE_STORAGE=true
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Anova'
+          app-name: ${{ env.APP_NAME }}
           package: ${{ env.PACKAGE_PATH }}
+
+      - name: Restart web app
+        shell: bash
+        run: az webapp restart --name "${{ env.APP_NAME }}" --resource-group "${{ steps.resolve-app.outputs.resource_group }}"
           
