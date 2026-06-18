@@ -7,13 +7,7 @@ on:
   push:
     branches:
       - main
-      - fix/workflow-explicit-project-publish
   workflow_dispatch:
-
-env:
-  PROJECT_PATH: ./BeautyBooking/BeautyBooking.csproj
-  PUBLISH_PATH: ./published-app
-  WEBAPP_NAME: anova-faebd4cqfecqcvd8
 
 jobs:
   build:
@@ -30,16 +24,16 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o ${{ env.PUBLISH_PATH }}
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{ env.PUBLISH_PATH }}
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,7 +50,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-          path: ${{ env.PUBLISH_PATH }}
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -69,7 +62,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ env.WEBAPP_NAME }}
+          app-name: 'Anova'
           slot-name: 'Production'
-          package: ${{ env.PUBLISH_PATH }}
+          package: .
           
