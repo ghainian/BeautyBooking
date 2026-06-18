@@ -12,6 +12,7 @@ on:
 env:
   PROJECT_PATH: ./BeautyBooking/BeautyBooking.csproj
   PUBLISH_PATH: ./published-app
+  PACKAGE_PATH: ./release.zip
 
 jobs:
   build:
@@ -36,11 +37,19 @@ jobs:
       - name: Inspect published output
         run: ls -la ${{ env.PUBLISH_PATH }}
 
+      - name: Create deploy package
+        run: |
+          cd ${{ env.PUBLISH_PATH }}
+          zip -r ../release.zip .
+
+      - name: Inspect deploy package
+        run: unzip -l ${{ env.PACKAGE_PATH }} | head -n 50
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{ env.PUBLISH_PATH }}
+          path: ${{ env.PACKAGE_PATH }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -57,10 +66,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-          path: ${{ env.PUBLISH_PATH }}
+          path: .
 
       - name: Inspect downloaded artifact
-        run: ls -la ${{ env.PUBLISH_PATH }}
+        run: |
+          ls -la ${{ env.PACKAGE_PATH }}
+          unzip -l ${{ env.PACKAGE_PATH }} | head -n 50
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -74,5 +85,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'Anova'
-          package: ${{ env.PUBLISH_PATH }}
+          package: ${{ env.PACKAGE_PATH }}
           
