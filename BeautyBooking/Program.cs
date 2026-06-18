@@ -8,9 +8,9 @@ builder.Services.AddControllersWithViews().AddViewLocalization();
 
 var app = builder.Build();
 
-var supportedCultures = new[] { "da", "en", "fr", "de" };
+var supportedCultures = new[] { "da-DK", "en-US", "fr-FR", "de-DE", "ar-SA", "fa-IR", "zh-CN" };
 var localizationOptions = new RequestLocalizationOptions()
-    .SetDefaultCulture("da")
+    .SetDefaultCulture("da-DK")
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);
 

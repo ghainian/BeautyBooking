@@ -18,10 +18,68 @@ html {
     color: var(--tone-dark);
 }
 
+.onepage-home.lang-ar,
+.onepage-home.lang-ar * {
+    font-family: "Noto Sans Arabic", "Segoe UI", sans-serif;
+}
+
+.onepage-home.lang-fa,
+.onepage-home.lang-fa * {
+    font-family: "Vazirmatn", "Segoe UI", sans-serif;
+}
+
+.onepage-home.lang-zh,
+.onepage-home.lang-zh * {
+    font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+.onepage-home.lang-ar .eyebrow,
+.onepage-home.lang-fa .eyebrow,
+.onepage-home.lang-zh .eyebrow,
+.onepage-home.lang-ar .site-nav .navbar-nav > li > a,
+.onepage-home.lang-fa .site-nav .navbar-nav > li > a,
+.onepage-home.lang-zh .site-nav .navbar-nav > li > a {
+    text-transform: none;
+    letter-spacing: 0.03em;
+}
+
 .onepage-home a:not(.btn):hover,
 .onepage-home a:not(.btn):focus {
     color: #f5c45a;
     text-decoration: none;
+}
+
+html[dir="rtl"] .onepage-home {
+    direction: rtl;
+}
+
+html[dir="rtl"] .site-nav .navbar-header {
+    float: right;
+}
+
+html[dir="rtl"] .site-nav .navbar-right {
+    float: left !important;
+}
+
+html[dir="rtl"] .site-nav .navbar-nav > li {
+    float: right;
+}
+
+html[dir="rtl"] .hero-content,
+html[dir="rtl"] .about-block .content,
+html[dir="rtl"] .section-headline-modern,
+html[dir="rtl"] .contact-info-card,
+html[dir="rtl"] .booking-panel,
+html[dir="rtl"] .footer-grid {
+    text-align: right;
+}
+
+html[dir="rtl"] .hours-list li {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .contact-info-card .social-link {
+    flex-direction: row-reverse;
 }
 
 .site-nav-wrap {

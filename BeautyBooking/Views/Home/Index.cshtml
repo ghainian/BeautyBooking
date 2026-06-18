@@ -3,10 +3,11 @@
 @{
     Layout = null;
     var currentLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var isRtlLanguage = currentLanguage == "ar" || currentLanguage == "fa";
     Func<string, string> T = key => SiteText.Get(key, currentLanguage);
 }
 <!doctype html>
-<html class="no-js" lang="@currentLanguage">
+<html class="no-js" lang="@currentLanguage" dir="@(isRtlLanguage ? "rtl" : "ltr")">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -22,18 +23,18 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;700&family=Vazirmatn:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/vendor.css">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/pages.css">
-    <link rel="stylesheet" href="/css/onepage-redesign.css?v=20260618-9">
+    <link rel="stylesheet" href="/css/onepage-redesign.css?v=20260618-10">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
-<body class="onepage-home">
+<body class="onepage-home lang-@currentLanguage">
     <header class="site-nav-wrap">
         <nav class="navbar navbar-default site-nav" id="top-nav">
             <div class="container">
@@ -56,10 +57,13 @@
                         <li><a href="#gallery">@T("NavGallery")</a></li>
                         <li><a href="#hours-contact">@T("NavContact")</a></li>
                         <li class="nav-cta"><a href="/book">@T("NavBook")</a></li>
-                        <li class="language-switcher"><a href="/home?culture=da&ui-culture=da">DA</a></li>
-                        <li class="language-switcher"><a href="/home?culture=en&ui-culture=en">EN</a></li>
-                        <li class="language-switcher"><a href="/home?culture=fr&ui-culture=fr">FR</a></li>
-                        <li class="language-switcher"><a href="/home?culture=de&ui-culture=de">DE</a></li>
+                        <li class="language-switcher"><a href="/home?culture=da-DK&ui-culture=da-DK">DA</a></li>
+                        <li class="language-switcher"><a href="/home?culture=en-US&ui-culture=en-US">EN</a></li>
+                        <li class="language-switcher"><a href="/home?culture=fr-FR&ui-culture=fr-FR">FR</a></li>
+                        <li class="language-switcher"><a href="/home?culture=de-DE&ui-culture=de-DE">DE</a></li>
+                        <li class="language-switcher"><a href="/home?culture=ar-SA&ui-culture=ar-SA">AR</a></li>
+                        <li class="language-switcher"><a href="/home?culture=fa-IR&ui-culture=fa-IR">FA</a></li>
+                        <li class="language-switcher"><a href="/home?culture=zh-CN&ui-culture=zh-CN">ZH</a></li>
                     </ul>
                 </div>
             </div>
