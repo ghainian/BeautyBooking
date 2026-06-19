@@ -93,13 +93,20 @@ jobs:
           echo "resource_group=$RG" >> "$GITHUB_OUTPUT"
           az webapp show --name "${{ env.APP_NAME }}" --resource-group "$RG" --query "{name:name,defaultHostName:defaultHostName,state:state,linuxFxVersion:siteConfig.linuxFxVersion,appCommandLine:siteConfig.appCommandLine}" -o json
 
-      - name: Enforce app settings for package deployment
+      - name: Configure startup command and remove conflicting settings
         shell: bash
         run: |
-          az webapp config appsettings set \
+          RG="${{ steps.resolve-app.outputs.resource_group }}"
+          # Remove WEBSITE_RUN_FROM_PACKAGE — it conflicts with OneDeploy (which extracts files)
+          az webapp config appsettings delete \
             --name "${{ env.APP_NAME }}" \
-            --resource-group "${{ steps.resolve-app.outputs.resource_group }}" \
-            --settings WEBSITE_RUN_FROM_PACKAGE=1 SCM_DO_BUILD_DURING_DEPLOYMENT=false WEBSITES_ENABLE_APP_SERVICE_STORAGE=true
+            --resource-group "$RG" \
+            --setting-names WEBSITE_RUN_FROM_PACKAGE || true
+          # Set explicit startup command so Azure does not have to guess
+          az webapp config set \
+            --name "${{ env.APP_NAME }}" \
+            --resource-group "$RG" \
+            --startup-file "dotnet BeautyBooking.dll"
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
