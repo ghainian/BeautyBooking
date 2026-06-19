@@ -86,7 +86,6 @@ html {
     min-height: 92vh;
     display: flex;
     align-items: center;
-    background-image: url('/img/home/background1.png');
     background-size: cover;
     background-position: center;
 }
