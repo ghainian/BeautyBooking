@@ -1,0 +1,645 @@
+/*
+// Table of content
+// -----------------------------------------------------------------------------
+// - 1. Homepage
+// - 2. About Page
+// - 3. Gallery Page
+// - 4. Gallery Detail Page
+// - 5. Services Page
+// - 6. Contact Page
+*/
+/* -----------------------------------------------------------------------------
+// 1. Homepage
+// ----------------------------------------------------------------------------- */
+.homepage .section-headline {
+  margin-bottom: 40px;
+  text-align: center; }
+  .homepage .section-headline h3 {
+    text-transform: uppercase; }
+    .homepage .section-headline h3 + p {
+      text-transform: uppercase; }
+.homepage .hero-splash {
+  position: relative;
+  height: 800px;
+  overflow: hidden;
+  text-align: center; }
+  .homepage .hero-splash .splash-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+    @media (max-width: 1200px) {
+      .homepage .hero-splash .splash-slider img {
+        max-width: initial; } }
+  .homepage .hero-splash .align {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%); }
+  @media (max-width: 992px) {
+    .homepage .hero-splash .align img {
+      width: 300px; } }
+  .homepage .hero-splash .owl-pagination {
+    position: absolute;
+    bottom: 30px;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    text-align: center; }
+    .homepage .hero-splash .owl-pagination .owl-page {
+      display: inline-block; }
+      .homepage .hero-splash .owl-pagination .owl-page span {
+        display: block;
+        width: 12px;
+        height: 12px;
+        margin: 5px 7px;
+        filter: Alpha(Opacity=50);
+        opacity: 0.5;
+        border: 2px solid #fff;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+        background: transparent; }
+      .homepage .hero-splash .owl-pagination .owl-page.active span {
+        filter: Alpha(Opacity=100);
+        opacity: 1;
+        border-color: #dcb879;
+        background-color: #dcb879; }
+.homepage .welcome .welcome-gallery img {
+  margin-bottom: 15px;
+  width: 31.5%; }
+  .homepage .welcome .welcome-gallery img + img {
+    margin-left: 2%; }
+.homepage .welcome .content {
+  padding-left: 30px; }
+.homepage .welcome h2 {
+  margin-top: 0;
+  text-transform: uppercase;
+  margin-bottom: 30px; }
+.homepage .welcome p {
+  margin-bottom: 25px; }
+.homepage .welcome .btn {
+  margin-top: 5px; }
+.homepage .counters {
+  background: url(http://placehold.it/1895x1200) center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+  .homepage .counters .section-headline h3 {
+    color: #dcb879;
+    letter-spacing: 1px; }
+  .homepage .counters .section-headline p {
+    font-family: "Oswald", Helvetica, Arial, sans-serif; }
+  .homepage .counters .btn + .btn {
+    margin-left: 10px; }
+.homepage .services-section .iconbox:hover {
+  background-color: #dcb879;
+  border-bottom-color: #d1af73; }
+  .homepage .services-section .iconbox:hover .icon {
+    background-color: #181818; }
+  .homepage .services-section .iconbox:hover h4, .homepage .services-section .iconbox:hover p {
+    color: #181818; }
+.homepage .gallery .gallery-item {
+  position: relative;
+  width: 20%;
+  float: left; }
+  .homepage .gallery .gallery-item .caption {
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 100%;
+    padding: 20px 0;
+    background-color: #181818;
+    background-color: rgba(24, 24, 24, 0.75);
+    color: #fff;
+    font-family: "Oswald", Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 18px; }
+    .homepage .gallery .gallery-item .caption p {
+      margin: 0; }
+  .homepage .gallery .gallery-item .meta {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s;
+    -moz-transition: opacity 0.3s;
+    -ms-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%); }
+    .homepage .gallery .gallery-item .meta a {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 18px;
+      border-radius: 5px;
+      background-color: #dcb879;
+      color: #181818;
+      -webkit-transition: background-color 0.5s;
+      -moz-transition: background-color 0.5s;
+      -ms-transition: background-color 0.5s;
+      -o-transition: background-color 0.5s;
+      transition: background-color 0.5s; }
+      .homepage .gallery .gallery-item .meta a + a {
+        margin-left: 5px; }
+      .homepage .gallery .gallery-item .meta a:hover {
+        background-color: #181818;
+        color: #dcb879; }
+  .homepage .gallery .gallery-item:hover .meta {
+    opacity: 1; }
+@media (max-width: 992px) {
+  .homepage .gallery .gallery-item {
+    width: 50%; } }
+@media (max-width: 768px) {
+  .homepage .gallery .gallery-item {
+    width: 100%; } }
+.homepage .testimonials {
+  background: url(http://placehold.it/1895x1200) center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+  .homepage .testimonials .section-headline {
+    text-align: left; }
+    .homepage .testimonials .section-headline h3 {
+      color: #dcb879; }
+    .homepage .testimonials .section-headline p {
+      text-transform: uppercase;
+      font-family: "Oswald", Helvetica, Arial, sans-serif;
+      color: #717171; }
+  .homepage .testimonials .owl-pagination {
+    position: absolute;
+    right: 0;
+    left: initial;
+    top: 15px; }
+    .homepage .testimonials .owl-pagination .owl-page {
+      display: block; }
+      .homepage .testimonials .owl-pagination .owl-page span {
+        display: block;
+        width: 12px;
+        height: 12px;
+        margin: 5px 7px;
+        opacity: 1;
+        border: 1px solid #fff;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+        background: transparent; }
+      .homepage .testimonials .owl-pagination .owl-page.active span {
+        filter: Alpha(Opacity=100);
+        opacity: 1;
+        border-color: #dcb879;
+        background-color: #dcb879; }
+.homepage .shop .post .align {
+  padding: 30px;
+  background-color: #f9f9f9; }
+.homepage .shop .post h3 {
+  text-transform: uppercase;
+  font-size: 20px;
+  margin-bottom: 30px; }
+  .homepage .shop .post h3 + p {
+    margin-bottom: 30px; }
+.homepage .shop .post .btn + .btn {
+  margin-left: 10px; }
+
+/* -----------------------------------------------------------------------------
+// 2. About Page 
+// ----------------------------------------------------------------------------- */
+.about .section-headline {
+  margin-bottom: 30px;
+  text-align: center; }
+  .about .section-headline h3 {
+    text-transform: uppercase; }
+    .about .section-headline h3 + p {
+      text-transform: uppercase; }
+.about .hero-title {
+  background-image: url(http://placehold.it/1895x500); }
+.about .aboutus h3 {
+  text-transform: uppercase;
+  margin-bottom: 30px; }
+.about .numbers .progress-item {
+  text-align: center; }
+  .about .numbers .progress-item strong {
+    font-family: "Oswald", Helvetica, Arial, sans-serif;
+    position: absolute;
+    top: 57.5px;
+    right: 0;
+    left: 0;
+    color: #4b4b4b;
+    font-weight: normal;
+    font-size: 18px; }
+  .about .numbers .progress-item h4 {
+    font-weight: 500;
+    margin: 30px 0 25px 0;
+    text-transform: uppercase;
+    color: #4b4b4b; }
+    .about .numbers .progress-item h4 + p {
+      padding: 0 15px;
+      margin-bottom: 20px; }
+@media (max-width: 992px) {
+  .about .numbers .progress-item {
+    margin-bottom: 30px; } }
+.about .clients {
+  background: url(http://placehold.it/1895x1000) center center; }
+  .about .clients .section-headline h3 {
+    color: #dcb879; }
+  .about .clients .section-headline p {
+    text-transform: uppercase;
+    font-family: "Oswald", Helvetica, Arial, sans-serif; }
+  @media (max-width: 992px) {
+    .about .clients img {
+      margin-bottom: 30px; } }
+
+/* -----------------------------------------------------------------------------
+// 3. Gallery Page
+// ----------------------------------------------------------------------------- */
+.gallery .section-headline {
+  margin-bottom: 30px;
+  text-align: center; }
+  .gallery .section-headline h3 {
+    text-transform: uppercase; }
+    .gallery .section-headline h3 + p {
+      text-transform: uppercase; }
+.gallery .hero-title {
+  background-image: url(http://placehold.it/1895x500); }
+.gallery .gallery-filter {
+  padding: 20px 0;
+  background-color: #181818; }
+  .gallery .gallery-filter h5 {
+    display: inline-block;
+    text-transform: uppercase;
+    color: #fff; }
+  .gallery .gallery-filter ul {
+    display: inline-block;
+    padding: 0;
+    margin-left: 10px;
+    margin-top: 10px; }
+  .gallery .gallery-filter li {
+    display: inline-block;
+    margin-right: 15px;
+    color: #9c9c9c;
+    text-transform: uppercase;
+    font-family: "Oswald", Helvetica, Arial, sans-serif; }
+    .gallery .gallery-filter li.active, .gallery .gallery-filter li.active:hover {
+      color: #dcb879;
+      cursor: auto; }
+    .gallery .gallery-filter li:hover {
+      cursor: pointer;
+      color: #4b4b4b; }
+.gallery .gallery-items .item {
+  position: relative;
+  width: 20%;
+  float: left;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s; }
+  .gallery .gallery-items .item .caption {
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 100%;
+    padding: 20px 0;
+    background-color: #181818;
+    background-color: rgba(24, 24, 24, 0.75);
+    color: #fff;
+    font-family: "Oswald", Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 18px; }
+    .gallery .gallery-items .item .caption p {
+      margin: 0; }
+  .gallery .gallery-items .item .meta {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s;
+    -moz-transition: opacity 0.3s;
+    -ms-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%); }
+    .gallery .gallery-items .item .meta a {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 18px;
+      border-radius: 5px;
+      background-color: #dcb879;
+      color: #181818;
+      -webkit-transition: background-color 0.5s;
+      -moz-transition: background-color 0.5s;
+      -ms-transition: background-color 0.5s;
+      -o-transition: background-color 0.5s;
+      transition: background-color 0.5s; }
+      .gallery .gallery-items .item .meta a + a {
+        margin-left: 5px; }
+      .gallery .gallery-items .item .meta a:hover {
+        background-color: #181818;
+        color: #dcb879; }
+  .gallery .gallery-items .item:hover .meta {
+    opacity: 1; }
+@media (max-width: 992px) {
+  .gallery .gallery-items .item {
+    width: 50%; } }
+@media (max-width: 768px) {
+  .gallery .gallery-items .item {
+    width: 100%; } }
+.gallery .gallery-items.grid4 .item {
+  width: 25%; }
+@media (max-width: 992px) {
+  .gallery .gallery-items.grid4 .item {
+    width: 50%; } }
+@media (max-width: 768px) {
+  .gallery .gallery-items.grid4 .item {
+    width: 100%; } }
+
+/* -----------------------------------------------------------------------------
+// 4. Gallery Detail Page 
+// ----------------------------------------------------------------------------- */
+.gallery-detail .section-headline {
+  margin-bottom: 30px;
+  text-align: center; }
+  .gallery-detail .section-headline h3 {
+    text-transform: uppercase; }
+    .gallery-detail .section-headline h3 + p {
+      text-transform: uppercase; }
+.gallery-detail .hero-title {
+  background-image: url(http://placehold.it/1895x500); }
+.gallery-detail .post .post-gallery {
+  margin-bottom: 30px; }
+  .gallery-detail .post .post-gallery:before, .gallery-detail .post .post-gallery:after {
+    content: " ";
+    display: table; }
+  .gallery-detail .post .post-gallery:after {
+    clear: both; }
+  .gallery-detail .post .post-gallery .gallery-item {
+    position: relative;
+    width: 33%;
+    float: left; }
+    .gallery-detail .post .post-gallery .gallery-item .caption {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      background-color: #dcb879;
+      background-color: rgba(220, 184, 121, 0.85);
+      opacity: 0;
+      -webkit-transition: opacity 0.5s;
+      -moz-transition: opacity 0.5s;
+      -ms-transition: opacity 0.5s;
+      -o-transition: opacity 0.5s;
+      transition: opacity 0.5s; }
+      .gallery-detail .post .post-gallery .gallery-item .caption i {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        text-align: center;
+        margin: 0 auto;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+        color: #181818;
+        font-size: 24px; }
+    .gallery-detail .post .post-gallery .gallery-item:hover .caption {
+      opacity: 1; }
+    .gallery-detail .post .post-gallery .gallery-item + .gallery-item {
+      margin-left: .5%; }
+.gallery-detail .post h2 {
+  margin: 20px 0;
+  text-transform: uppercase; }
+.gallery-detail .post .social {
+  padding: 0;
+  margin: 30px 0 0 0; }
+  .gallery-detail .post .social li {
+    display: inline-block;
+    list-style-type: none; }
+  .gallery-detail .post .social a {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 35px;
+    border-radius: 100%;
+    background-color: #dcb879;
+    color: #181818;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s; }
+    .gallery-detail .post .social a:hover {
+      background-color: #181818;
+      color: #dcb879; }
+.gallery-detail .post .pagination {
+  display: block;
+  margin: 100px 15px 0 15px;
+  padding: 30px 0 0 0;
+  border-top: 1px solid #f1f1f1;
+  border-radius: 0;
+  font-size: 18px; }
+  .gallery-detail .post .pagination a {
+    color: #e5e5e5; }
+    .gallery-detail .post .pagination a:hover {
+      color: #c5c5c5; }
+  .gallery-detail .post .pagination .arrow {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #e5e5e5; }
+    .gallery-detail .post .pagination .arrow:hover {
+      border-color: #c5c5c5; }
+
+/* -----------------------------------------------------------------------------
+// 5. Services Page 
+// ----------------------------------------------------------------------------- */
+.services .section-headline {
+  margin-bottom: 30px;
+  text-align: center; }
+  .services .section-headline h3 {
+    text-transform: uppercase; }
+    .services .section-headline h3 + p {
+      text-transform: uppercase; }
+.services .hero-title {
+  background-image: url(http://placehold.it/1895x500); }
+.services .service-items .post .align {
+  padding: 30px;
+  background-color: #f9f9f9; }
+.services .service-items .post h4 {
+  text-transform: uppercase;
+  margin-bottom: 30px; }
+  .services .service-items .post h4 + p {
+    margin-bottom: 30px; }
+.services .service-items .post .btn {
+  border-color: #4b4b4b;
+  color: #4b4b4b;
+  font-size: 12px;
+  padding: 12px 20px; }
+  .services .service-items .post .btn:hover {
+    background-color: #4b4b4b;
+    color: #fff; }
+.services .service-items .post .btn + .btn {
+  margin-left: 10px; }
+.services .testimonials {
+  background: url(http://placehold.it/1895x1200) center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+  .services .testimonials .section-headline {
+    text-align: left; }
+    .services .testimonials .section-headline h3 {
+      color: #dcb879; }
+    .services .testimonials .section-headline p {
+      text-transform: uppercase;
+      font-family: "Oswald", Helvetica, Arial, sans-serif;
+      color: #717171; }
+  .services .testimonials .owl-pagination {
+    position: absolute;
+    right: 0;
+    left: initial;
+    top: 15px; }
+    .services .testimonials .owl-pagination .owl-page {
+      display: block; }
+      .services .testimonials .owl-pagination .owl-page span {
+        display: block;
+        width: 12px;
+        height: 12px;
+        margin: 5px 7px;
+        opacity: 1;
+        border: 1px solid #fff;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+        background: transparent; }
+      .services .testimonials .owl-pagination .owl-page.active span {
+        filter: Alpha(Opacity=100);
+        opacity: 1;
+        border-color: #dcb879;
+        background-color: #dcb879; }
+.services .services-section .iconbox:hover {
+  background-color: #dcb879;
+  border-bottom-color: #d1af73; }
+  .services .services-section .iconbox:hover .icon {
+    background-color: #181818; }
+  .services .services-section .iconbox:hover h4, .services .services-section .iconbox:hover p {
+    color: #181818; }
+
+/* -----------------------------------------------------------------------------
+// 6. Contact 
+// ----------------------------------------------------------------------------- */
+.contact-page .section-headline {
+  margin-bottom: 30px;
+  text-align: center; }
+  .contact-page .section-headline h3 {
+    text-transform: uppercase; }
+    .contact-page .section-headline h3 + p {
+      text-transform: uppercase; }
+.contact-page header {
+  z-index: 2; }
+.contact-page .contact-map {
+  position: relative;
+  height: 400px;
+  background: url(http://placehold.it/1895x500) center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+  .contact-page .contact-map h2 {
+    position: absolute;
+    top: 70%;
+    right: 0;
+    left: 0;
+    text-align: center;
+    margin: 0 auto;
+    color: #fff;
+    font-size: 28px;
+    z-index: 10;
+    text-transform: uppercase; }
+.contact-page .directions .meta {
+  padding: 30px 30px 20px 30px;
+  background-color: #242424; }
+  .contact-page .directions .meta:before, .contact-page .directions .meta:after {
+    content: " ";
+    display: table; }
+  .contact-page .directions .meta:after {
+    clear: both; }
+.contact-page .directions h4 {
+  color: #fff;
+  text-transform: uppercase; }
+.contact-page .directions .btn {
+  color: #717171;
+  border-color: #717171;
+  padding: 10px 18px;
+  font-size: 12px; }
+  .contact-page .directions .btn:hover {
+    background-color: #dcb879;
+    color: #fff; }
+.contact-page .contact-info {
+  margin-bottom: 30px; }
+  .contact-page .contact-info .item h3 {
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-bottom: 30px; }
+  .contact-page .contact-info .item .list {
+    margin-bottom: 30px; }
+    .contact-page .contact-info .item .list li {
+      margin-bottom: 8px; }
+  @media (max-width: 992px) {
+    .contact-page .contact-info .item {
+      margin-bottom: 30px; } }
+@media (min-width: 992px) {
+  .contact-page .contact-info,
+  .contact-page .contact-form {
+    padding-left: 40px; } }
+.contact-page .contact-form h2 {
+  text-transform: uppercase;
+  margin-bottom: 30px; }
+.contact-page .contact-form .form-control {
+  background-color: #f9f9f9; }
+.contact-page .contact-form textarea {
+  height: 200px; }
+
+/*# sourceMappingURL=pages.css.map */
