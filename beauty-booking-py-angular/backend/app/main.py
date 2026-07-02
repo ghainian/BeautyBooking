@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Dict
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, RedirectResponse
 
@@ -51,6 +51,21 @@ def services_redirect() -> RedirectResponse:
 @app.get("/price")
 def price_redirect() -> RedirectResponse:
     return RedirectResponse(url="/home#services", status_code=307)
+
+
+@app.api_route("/contactform/contact-form-handler.php", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+def removed_legacy_contact_form_handler() -> None:
+    raise HTTPException(status_code=404, detail="Endpoint removed")
+
+
+@app.api_route("/contact-form-handler.php", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+def removed_root_contact_form_handler() -> None:
+    raise HTTPException(status_code=404, detail="Endpoint removed")
+
+
+@app.api_route("/contactform/thanks/contact-form-thank-you.html", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+def removed_legacy_contact_form_thanks() -> None:
+    raise HTTPException(status_code=404, detail="Endpoint removed")
 
 
 DIST_DIR = (Path(__file__).resolve().parent.parent / "frontend-dist").resolve()

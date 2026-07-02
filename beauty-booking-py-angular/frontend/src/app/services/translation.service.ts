@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class TranslationService {
-    private readonly apiBase = 'http://localhost:8000/api/translations';
+    private readonly apiBase = '/api/translations';
 
     constructor(private readonly http: HttpClient) { }
 
