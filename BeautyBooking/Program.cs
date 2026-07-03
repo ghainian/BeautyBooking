@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews().AddViewLocalization();
 
 var app = builder.Build();
 
-var supportedCultures = new[] { "da", "en", "fr", "de", "zh" };
+var supportedCultures = new[] { "da", "en", "fr", "de", "ar", "fa", "zh" };
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture("da")
     .AddSupportedCultures(supportedCultures)
@@ -30,6 +30,27 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Query.TryGetValue("culture", out var culture)
+        && context.Request.Query.TryGetValue("ui-culture", out var uiCulture))
+    {
+        var cookieValue = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture!, uiCulture!));
+        context.Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            cookieValue,
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
+                IsEssential = true,
+                HttpOnly = false
+            });
+    }
+
+    await next();
+});
+
 app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
@@ -41,3 +62,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public partial class Program
+{
+}

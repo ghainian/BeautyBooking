@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BeautyBooking.Localization
 {
@@ -9,9 +10,9 @@ namespace BeautyBooking.Localization
         {
             ["MetaTitle"] = "Anova Salon | Frisør i København",
             ["MetaDescription"] = "Anova Salon på Amagerbrogade i København tilbyder professionel dameklip, herreklip og børneklip. Book tid online i dag.",
-            ["NavHome"] = "Home",
+            ["NavHome"] = "Hjem",
             ["NavAbout"] = "Om Os",
-            ["NavServices"] = "Services",
+            ["NavServices"] = "Behandlinger",
             ["NavGallery"] = "Galleri",
             ["NavHours"] = "Åbningstider",
             ["NavContact"] = "Kontakt",
@@ -21,12 +22,12 @@ namespace BeautyBooking.Localization
             ["HeroLead"] = "Step ind i et roligt rum for moderne klip, styling og personlig service. Vi kombinerer klassisk håndværk med nutidigt look i hjertet af Amager.",
             ["HeroBook"] = "Bestil tid",
             ["HeroViewServices"] = "Se services",
-            ["AboutEyebrow"] = "About us",
+            ["AboutEyebrow"] = "Om os",
             ["AboutTitle"] = "Passion for detail i hver behandling",
             ["AboutText1"] = "Velkommen til Anova Salon, din nye hårdestination i København. Uanset om du er mand, kvinde, barn eller senior, tilpasser vi hver behandling til dit behov og din stil.",
             ["AboutText2"] = "Vores erfarne stylister arbejder med produkter af høj kvalitet i afslappede omgivelser, så du går herfra med et look der holder.",
             ["AboutBook"] = "Book appointment",
-            ["ServicesEyebrow"] = "Our services",
+            ["ServicesEyebrow"] = "Vores behandlinger",
             ["ServicesTitle"] = "Populære behandlinger",
             ["Service1Name"] = "Herreklip",
             ["Service1Text"] = "Klassisk eller moderne herreklip med professionel finish.",
@@ -57,7 +58,7 @@ namespace BeautyBooking.Localization
             ["Service7Meta"] = "15 min",
             ["Service7Price"] = "180 DKK",
             ["BookOnline"] = "Bestil Online",
-            ["GalleryEyebrow"] = "Gallery",
+            ["GalleryEyebrow"] = "Galleri",
             ["GalleryTitle"] = "Udvalgte resultater",
             ["HoursEyebrow"] = "Åbningstider",
             ["HoursTitle"] = "Vi har åbent næsten hele ugen",
@@ -77,11 +78,18 @@ namespace BeautyBooking.Localization
             ["BookingTitle"] = "Klar til et nyt look?",
             ["BookingText"] = "Book din tid online på under et minut.",
             ["BookingCta"] = "Bestil Online",
+            ["BookPageTitle"] = "Book din tid",
+            ["BookPageLead"] = "Vælg den type booking, der passer dig bedst.",
+            ["BookStudentOption"] = "Booking hos elev",
+            ["ThanksTitle"] = "Tak for din booking!",
+            ["ThanksLead"] = "Vi glæder os til at se dig i Salon Anova. Du modtager en bekræftelse snarest.",
+            ["ThanksBookAgain"] = "Book en ny tid",
+            ["ThanksBackHome"] = "Tilbage til forsiden",
             ["FooterTagline"] = "Eksklusiv craftsmanship og wellness i hjertet af Amager.",
-            ["FooterQuickLinks"] = "Quick links",
+            ["FooterQuickLinks"] = "Hurtige links",
             ["FooterBook"] = "Book",
             ["FooterBookText"] = "Book direkte på vores interne bookingside.",
-            ["FooterGoBooking"] = "Ga til booking",
+            ["FooterGoBooking"] = "Gå til booking",
             ["FooterCopyright"] = "© 2026 Anova Salon. All rights reserved."
         };
 
@@ -157,6 +165,13 @@ namespace BeautyBooking.Localization
             ["BookingTitle"] = "Ready for a new look?",
             ["BookingText"] = "Book your appointment online in under a minute.",
             ["BookingCta"] = "Book Online",
+            ["BookPageTitle"] = "Book your appointment",
+            ["BookPageLead"] = "Choose the booking option that fits you best.",
+            ["BookStudentOption"] = "Book with student stylist",
+            ["ThanksTitle"] = "Thanks for your booking!",
+            ["ThanksLead"] = "We look forward to seeing you at Salon Anova. You will receive a confirmation shortly.",
+            ["ThanksBookAgain"] = "Book another appointment",
+            ["ThanksBackHome"] = "Back to home",
             ["FooterTagline"] = "Exclusive craftsmanship and wellness in the heart of Amager.",
             ["FooterQuickLinks"] = "Quick links",
             ["FooterBook"] = "Book",
@@ -237,6 +252,13 @@ namespace BeautyBooking.Localization
             ["BookingTitle"] = "Prêt pour un nouveau look ?",
             ["BookingText"] = "Réservez votre rendez-vous en ligne en moins d'une minute.",
             ["BookingCta"] = "Réserver",
+            ["BookPageTitle"] = "Réservez votre rendez-vous",
+            ["BookPageLead"] = "Choisissez l'option de réservation qui vous convient le mieux.",
+            ["BookStudentOption"] = "Réservation avec élève coiffeur",
+            ["ThanksTitle"] = "Merci pour votre réservation !",
+            ["ThanksLead"] = "Nous avons hâte de vous accueillir chez Salon Anova. Vous recevrez bientôt une confirmation.",
+            ["ThanksBookAgain"] = "Réserver un autre créneau",
+            ["ThanksBackHome"] = "Retour à l'accueil",
             ["FooterTagline"] = "Savoir-faire exclusif et bien-être au cœur d'Amager.",
             ["FooterQuickLinks"] = "Liens rapides",
             ["FooterBook"] = "Réservation",
@@ -317,6 +339,13 @@ namespace BeautyBooking.Localization
             ["BookingTitle"] = "Bereit für einen neuen Look?",
             ["BookingText"] = "Buchen Sie Ihren Termin online in unter einer Minute.",
             ["BookingCta"] = "Online buchen",
+            ["BookPageTitle"] = "Termin buchen",
+            ["BookPageLead"] = "Wählen Sie die Buchungsoption, die am besten zu Ihnen passt.",
+            ["BookStudentOption"] = "Buchung beim Auszubildenden",
+            ["ThanksTitle"] = "Danke für Ihre Buchung!",
+            ["ThanksLead"] = "Wir freuen uns, Sie im Salon Anova zu sehen. Sie erhalten in Kürze eine Bestätigung.",
+            ["ThanksBookAgain"] = "Neuen Termin buchen",
+            ["ThanksBackHome"] = "Zurück zur Startseite",
             ["FooterTagline"] = "Exklusive Handwerkskunst und Wellness im Herzen von Amager.",
             ["FooterQuickLinks"] = "Schnellzugriffe",
             ["FooterBook"] = "Buchung",
@@ -397,6 +426,13 @@ namespace BeautyBooking.Localization
             ["BookingTitle"] = "جاهز لمظهر جديد؟",
             ["BookingText"] = "احجز موعدك عبر الإنترنت خلال أقل من دقيقة.",
             ["BookingCta"] = "احجز عبر الإنترنت",
+            ["BookPageTitle"] = "احجز موعدك",
+            ["BookPageLead"] = "اختر خيار الحجز الأنسب لك.",
+            ["BookStudentOption"] = "الحجز مع متدرب",
+            ["ThanksTitle"] = "شكرًا على حجزك!",
+            ["ThanksLead"] = "نتطلع لرؤيتك في صالون أنوفا. ستصلك رسالة تأكيد قريبًا.",
+            ["ThanksBookAgain"] = "احجز موعدًا آخر",
+            ["ThanksBackHome"] = "العودة إلى الرئيسية",
             ["FooterTagline"] = "حرفية فاخرة وعناية في قلب أماجر.",
             ["FooterQuickLinks"] = "روابط سريعة",
             ["FooterBook"] = "الحجز",
@@ -477,6 +513,13 @@ namespace BeautyBooking.Localization
             ["BookingTitle"] = "آماده یک ظاهر جدید هستید؟",
             ["BookingText"] = "در کمتر از یک دقیقه نوبت خود را آنلاین رزرو کنید.",
             ["BookingCta"] = "رزرو آنلاین",
+            ["BookPageTitle"] = "نوبت خود را رزرو کنید",
+            ["BookPageLead"] = "گزینه رزرو مناسب خود را انتخاب کنید.",
+            ["BookStudentOption"] = "رزرو با کارآموز",
+            ["ThanksTitle"] = "از رزرو شما متشکریم!",
+            ["ThanksLead"] = "مشتاق دیدار شما در سالن آنووا هستیم. تاییدیه رزرو به زودی ارسال می‌شود.",
+            ["ThanksBookAgain"] = "رزرو نوبت جدید",
+            ["ThanksBackHome"] = "بازگشت به صفحه اصلی",
             ["FooterTagline"] = "ترکیب هنر و آرامش در قلب اماگر.",
             ["FooterQuickLinks"] = "لینک های سریع",
             ["FooterBook"] = "رزرو",
@@ -557,6 +600,13 @@ namespace BeautyBooking.Localization
             ["BookingTitle"] = "准备换个新造型吗？",
             ["BookingText"] = "不到一分钟即可完成在线预约。",
             ["BookingCta"] = "在线预约",
+            ["BookPageTitle"] = "预约您的服务",
+            ["BookPageLead"] = "请选择最适合您的预约方式。",
+            ["BookStudentOption"] = "学员预约",
+            ["ThanksTitle"] = "感谢您的预约！",
+            ["ThanksLead"] = "期待在 Anova Salon 与您见面。您将很快收到确认信息。",
+            ["ThanksBookAgain"] = "再次预约",
+            ["ThanksBackHome"] = "返回首页",
             ["FooterTagline"] = "在 Amager 核心地段体验高端匠心与舒适护理。",
             ["FooterQuickLinks"] = "快捷链接",
             ["FooterBook"] = "预约",
@@ -591,5 +641,9 @@ namespace BeautyBooking.Localization
 
             return key;
         }
+
+        public static IReadOnlyList<string> GetSupportedLanguages() => new[] { "da", "en", "fr", "de", "ar", "fa", "zh" };
+
+        public static IReadOnlyList<string> GetKnownKeys() => Da.Keys.OrderBy(key => key, StringComparer.OrdinalIgnoreCase).ToArray();
     }
 }
