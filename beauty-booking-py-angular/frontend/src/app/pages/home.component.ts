@@ -10,6 +10,7 @@ import { TranslationService } from '../services/translation.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
     private readonly subscriptions = new Subscription();
+    private readonly allowedLanguages = ['da', 'en', 'fr', 'de', 'zh'];
     currentLanguage = 'da';
     dict: Record<string, string> = {};
 
@@ -19,9 +20,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         document.body.className = 'onepage-home';
 
         const qpSub = this.route.queryParamMap.subscribe((params) => {
-            const requested = (params.get('culture') || params.get('ui-culture') || 'da').toLowerCase();
-            const allowed = ['da', 'en', 'fr', 'de', 'zh'];
-            this.currentLanguage = allowed.includes(requested) ? requested : 'da';
+            const saved = (localStorage.getItem('anovaLang') || 'da').toLowerCase();
+            const requested = (params.get('culture') || params.get('ui-culture') || saved).toLowerCase();
+            this.currentLanguage = this.allowedLanguages.includes(requested) ? requested : 'da';
+            localStorage.setItem('anovaLang', this.currentLanguage);
             this.loadTranslations(this.currentLanguage);
         });
 
