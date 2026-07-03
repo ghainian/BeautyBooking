@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeautyBooking Python Test Guide</title>
+    <style>
+        body {
+            font-family: Segoe UI, Arial, sans-serif;
+            max-width: 900px;
+            margin: 32px auto;
+            padding: 0 16px;
+            line-height: 1.55;
+            color: #1f2937;
+            background: #f8fafc;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #0f172a;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        code,
+        pre {
+            font-family: Consolas, Menlo, monospace;
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 8px;
+        }
+
+        pre {
+            padding: 12px;
+            overflow-x: auto;
+        }
+
+        .ok {
+            color: #047857;
+            font-weight: 600;
+        }
+
+        .warn {
+            color: #b45309;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>BeautyBooking Python Test Guide</h1>
+
+    <div class="card">
+        <h2>Current Status</h2>
+        <p class="ok">Latest run: 30 passed.</p>
+        <pre>py -m pytest -q</pre>
+        <p>Run this command from the backend directory:</p>
+        <pre>C:\Repos\BeautyBooking\beauty-booking-py-angular\backend</pre>
+    </div>
+
+    <div class="card">
+        <h2>Exact Commands (PowerShell)</h2>
+        <h3>1) Run all backend tests</h3>
+        <pre>Set-Location C:\Repos\BeautyBooking\beauty-booking-py-angular\backend
+py -m pytest -q</pre>
+
+        <h3>2) Verbose output</h3>
+        <pre>Set-Location C:\Repos\BeautyBooking\beauty-booking-py-angular\backend
+py -m pytest -vv</pre>
+
+        <h3>3) Run one file</h3>
+        <pre>Set-Location C:\Repos\BeautyBooking\beauty-booking-py-angular\backend
+py -m pytest tests/test_voice_routes.py -vv</pre>
+
+        <h3>4) Run one test function</h3>
+        <pre>Set-Location C:\Repos\BeautyBooking\beauty-booking-py-angular\backend
+py -m pytest tests/test_voice_routes.py::test_booking_endpoint_returns_danish_confirmation_for_da_language -vv</pre>
+
+        <h3>5) Stop on first failure</h3>
+        <pre>Set-Location C:\Repos\BeautyBooking\beauty-booking-py-angular\backend
+py -m pytest -x -vv</pre>
+
+        <h3>6) Debug first failing test in terminal (pdb)</h3>
+        <pre>Set-Location C:\Repos\BeautyBooking\beauty-booking-py-angular\backend
+py -m pytest --pdb -x -vv</pre>
+    </div>
+
+    <div class="card">
+        <h2>If You Are in C:\Repos\BeautyBooking</h2>
+        <p class="warn">Do not run pytest directly from here for backend tests.</p>
+        <p>Use one of these instead:</p>
+        <pre>Set-Location C:\Repos\BeautyBooking\beauty-booking-py-angular\backend
+py -m pytest -q</pre>
+        <p>Or one-line command:</p>
+        <pre>py -m pytest -q C:\Repos\BeautyBooking\beauty-booking-py-angular\backend\tests</pre>
+    </div>
+
+    <div class="card">
+        <h2>VS Code Test Explorer</h2>
+        <ol>
+            <li>Open the <strong>backend</strong> folder as your active workspace root, or make sure tests are
+                discovered under backend/tests.</li>
+            <li>Select Python interpreter that has pytest installed.</li>
+            <li>Run or debug tests from the Testing panel.</li>
+        </ol>
+    </div>
+
+    <div class="card">
+        <h2>Common Issues</h2>
+        <ul>
+            <li><strong>No tests found / failures only from root:</strong> wrong working directory. Move to backend
+                directory first.</li>
+            <li><strong>Import or fixture errors:</strong> run tests via <code>py -m pytest</code> (not by executing
+                test files directly).</li>
+            <li><strong>Different results between terminal and VS Code:</strong> check interpreter mismatch.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

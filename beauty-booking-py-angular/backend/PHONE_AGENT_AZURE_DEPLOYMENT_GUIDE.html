@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BeautyBooking Phone Agent Deployment Guide (Azure)</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #4b5563;
+            --accent: #0f766e;
+            --accent-soft: #ccfbf1;
+            --warn: #9a3412;
+            --warn-soft: #ffedd5;
+            --ok: #166534;
+            --ok-soft: #dcfce7;
+            --border: #dbe3ee;
+            --code: #0b1220;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Segoe UI, Tahoma, sans-serif;
+            line-height: 1.55;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 10% 0%, #d1fae5 0%, transparent 45%),
+                radial-gradient(circle at 90% 0%, #dbeafe 0%, transparent 40%),
+                var(--bg);
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            display: grid;
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+            padding: 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
+            letter-spacing: 0.2px;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            color: #0f172a;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            color: #111827;
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+
+        ul {
+            margin: 8px 0 8px 20px;
+        }
+
+        li {
+            margin: 6px 0;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+        }
+
+        .tag.ok {
+            background: var(--ok-soft);
+            color: var(--ok);
+            border-color: #86efac;
+        }
+
+        .tag.warn {
+            background: var(--warn-soft);
+            color: var(--warn);
+            border-color: #fdba74;
+        }
+
+        .note {
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e3a8a;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            text-align: left;
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+
+        pre {
+            background: var(--code);
+            color: #f8fafc;
+            padding: 12px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        .small {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <section class="card">
+            <h1>Deploying the Phone Agent on Azure</h1>
+            <p>This guide explains how to deploy your phone-agent endpoints safely, whether they interrupt your current
+                website, and how to test before and after release.</p>
+            <span class="tag ok">Stack in this repo: FastAPI + Angular static files</span>
+            <span class="tag ok">Voice endpoints: /api/voice/*</span>
+            <span class="tag warn">Current orchestrator is a stub (no live ACS answer flow yet)</span>
+        </section>
+
+        <section class="card">
+            <h2>Will Deploying the Phone Agent Stop My Current Website?</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Deployment Pattern</th>
+                        <th>Impact on Current Website</th>
+                        <th>Recommendation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Same App Service, direct deploy to production slot</td>
+                        <td>Possible short interruption (typically app restart window) during deployment.</td>
+                        <td><strong>Use this on B1</strong> with low-traffic deploy window and rollback package ready.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Same App Service with deployment slots (staging -> swap)</td>
+                        <td>Not available on B1 Basic.</td>
+                        <td>Requires upgrade to Standard or higher.</td>
+                    </tr>
+                    <tr>
+                        <td>Separate App Service for phone agent API</td>
+                        <td>No interruption to existing website because workloads are isolated.</td>
+                        <td>Good isolation, but usually higher monthly cost.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="note">
+                On your current B1 plan, deploy directly to production and expect a short restart window. The safest
+                approach is to deploy during low traffic and keep the previous ZIP package for immediate rollback.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Recommended B1 Deployment Plan (No Staging Slot)</h2>
+            <ol>
+                <li>Use your existing Linux App Service: <strong>Anova</strong> in resource group
+                    <strong>anova</strong>.
+                </li>
+                <li>Build frontend and copy output into backend <code>frontend-dist</code>.</li>
+                <li>Package backend for ZIP deploy.</li>
+                <li>Set startup command on production app:<br />
+                    <pre><code>gunicorn -w 2 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:$PORT</code></pre>
+                </li>
+                <li>Configure voice environment variables on production app:
+                    <ul>
+                        <li><code>VOICE_DEFAULT_LANGUAGE</code></li>
+                        <li><code>VOICE_FALLBACK_LANGUAGE</code></li>
+                        <li><code>VOICE_FALLBACK_TRANSFER_NUMBER</code></li>
+                        <li><code>VOICE_RETENTION_MODE</code></li>
+                        <li><code>VOICE_BOOKING_PROVIDER</code></li>
+                    </ul>
+                </li>
+                <li>Deploy ZIP to production and run smoke tests immediately.</li>
+            </ol>
+        </section>
+
+        <section class="card">
+            <h2>Exact Deployment Commands for Your Current B1 App</h2>
+            <pre><code># Run from C:\Repos\BeautyBooking
+
+# 1) Build frontend
+Set-Location .\beauty-booking-py-angular\frontend
+npm ci
+npm run build
+
+# 2) Ensure backend has built frontend in frontend-dist
+Set-Location ..\backend
+# If your build output is not already copied automatically, copy it here.
+
+# 3) Create deployment package (keep previous package for rollback)
+if (Test-Path .\deploy-current.zip) { Remove-Item .\deploy-current.zip -Force }
+Compress-Archive -Path .\app, .\requirements.txt, .\frontend-dist -DestinationPath .\deploy-current.zip -Force
+
+# 4) Configure startup command on production app (one-time or when changed)
+az webapp config set `
+  --resource-group anova `
+  --name Anova `
+  --startup-file "gunicorn -w 2 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:$PORT"
+
+# 5) Configure required voice settings
+az webapp config appsettings set `
+  --resource-group anova `
+  --name Anova `
+  --settings VOICE_DEFAULT_LANGUAGE=da-DK VOICE_FALLBACK_LANGUAGE=en-US VOICE_FALLBACK_TRANSFER_NUMBER=+4542735479 VOICE_RETENTION_MODE=transcript-only VOICE_BOOKING_PROVIDER=setmore
+
+# 6) Deploy ZIP to production (B1 direct deploy)
+az webapp deploy `
+  --resource-group anova `
+  --name Anova `
+  --src-path .\deploy-current.zip `
+  --type zip
+
+# 7) Smoke tests
+curl https://anova.azurewebsites.net/api/health
+curl https://anova.azurewebsites.net/api/voice/services?language=en
+
+# 8) Live logs if needed
+az webapp log tail --resource-group anova --name Anova</code></pre>
+            <p class="small">Expected behavior on B1: app restarts during deploy; plan for a low-traffic window.</p>
+        </section>
+
+        <section class="card">
+            <h2>End-to-End Call Flow (Customer -> Booking or Cancellation)</h2>
+            <p>This is the exact runtime flow to implement and validate for the phone agent on your current backend.</p>
+            <ol>
+                <li>Customer calls your business phone number.</li>
+                <li>Azure Communication Services sends inbound call event to <code>/api/voice/call/incoming</code>.</li>
+                <li>Orchestrator accepts call and starts dialog (current code returns accepted status and fallback
+                    transfer number).</li>
+                <li>Agent asks for intent: booking, cancellation, or general question.</li>
+                <li>ACS speech/DTMF events are posted to <code>/api/voice/call/events</code> for turn-by-turn handling.
+                </li>
+                <li>If booking intent:
+                    <ul>
+                        <li>Agent gets services from <code>/api/voice/services</code>.</li>
+                        <li>Agent asks for date and checks slots via <code>/api/voice/availability</code>.</li>
+                        <li>Agent confirms selected slot via <code>/api/voice/bookings</code>.</li>
+                        <li>Agent reads confirmation text and booking id back to caller.</li>
+                    </ul>
+                </li>
+                <li>If cancellation intent:
+                    <ul>
+                        <li>Agent collects proof: booking reference OR service + start time.</li>
+                        <li>Agent verifies via <code>/api/voice/cancellations/verify</code>.</li>
+                        <li>If verified, agent confirms action and calls <code>/api/voice/cancellations/confirm</code>.
+                        </li>
+                        <li>Agent reads cancellation reference back to caller.</li>
+                    </ul>
+                </li>
+                <li>If intent is outside supported topics, agent transfers to fallback number
+                    (<code>VOICE_FALLBACK_TRANSFER_NUMBER</code>) or provides a fallback response.</li>
+            </ol>
+            <div class="note">
+                Important current-state note: booking and cancellation API contracts are implemented, but live speech
+                orchestration is still minimal.
+                To get real phone conversations, you still need ACS event routing plus dialog logic inside the
+                orchestrator.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>What This Phone Agent Can and Cannot Handle</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Caller Request Type</th>
+                        <th>Can Handle Now</th>
+                        <th>What Happens</th>
+                        <th>Required Improvement (if not handled)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Book appointment</td>
+                        <td>Partly</td>
+                        <td>API supports list services, availability, and booking confirmation. Voice conversation flow
+                            must still be wired in orchestrator.</td>
+                        <td>Add turn logic in <code>/api/voice/call/events</code> to collect service/date/time from
+                            speech.</td>
+                    </tr>
+                    <tr>
+                        <td>Cancel appointment</td>
+                        <td>Partly</td>
+                        <td>API supports verify and confirm cancellation. Caller still needs dialog orchestration to
+                            collect proof fields naturally.</td>
+                        <td>Add guided cancel dialog and re-prompt handling.</td>
+                    </tr>
+                    <tr>
+                        <td>"Is this the right place?"</td>
+                        <td>No (today)</td>
+                        <td>Current orchestrator does not contain business identity Q and A. Best fallback is transfer
+                            to staff number.</td>
+                        <td>Add identity intent with answer template like "Yes, this is BeautyBooking salon".</td>
+                    </tr>
+                    <tr>
+                        <td>"Are you open on specific date/time?"</td>
+                        <td>No (today)</td>
+                        <td>No dedicated business-hours endpoint in current voice module. Agent cannot reliably answer
+                            opening-hours questions yet.</td>
+                        <td>Add opening-hours data source and intent route in orchestrator.</td>
+                    </tr>
+                    <tr>
+                        <td>General small talk or unrelated questions</td>
+                        <td>No (today)</td>
+                        <td>Should fallback or transfer, otherwise caller experience will be confusing.</td>
+                        <td>Add explicit out-of-scope response policy and transfer rule.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Example Outcomes for Common Calls</h3>
+            <ul>
+                <li>Caller says: "Hi, is this the right salon?" -> Recommended behavior: short identity confirmation,
+                    then ask "Would you like to book or cancel?"</li>
+                <li>Caller says: "Are you open on 14 July at 18:00?" -> Recommended behavior: if hours data exists
+                    answer directly; otherwise transfer to staff.</li>
+                <li>Caller says: "I want to cancel my booking" -> Agent asks for booking reference, or service +
+                    appointment time, then verifies and cancels.</li>
+                <li>Caller says: "I need ladies haircut next Tuesday" -> Agent proposes slots from availability API and
+                    confirms selected time.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>How to Test the Phone Agent</h2>
+            <h3>1) Local automated tests</h3>
+            <pre><code>cd beauty-booking-py-angular/backend
+py -m pytest tests/test_voice_routes.py -vv</code></pre>
+            <p class="small">Covers incoming call events, services, availability, bookings, and cancellation endpoints.
+            </p>
+
+            <h3>2) Local manual API smoke tests</h3>
+            <pre><code># Health
+curl http://localhost:8000/api/health
+
+# Incoming call event
+curl -X POST http://localhost:8000/api/voice/call/incoming \
+  -H "Content-Type: application/json" \
+  -d '{"call_id":"call-123","from":"+4511111111","to":"+4522222222"}'
+
+# Call event callback
+curl -X POST http://localhost:8000/api/voice/call/events \
+  -H "Content-Type: application/json" \
+  -d '{"call_id":"call-123","event_type":"recognize_completed"}'
+
+# List services
+curl "http://localhost:8000/api/voice/services?language=en"</code></pre>
+
+            <h3>3) Production verification on Azure (B1)</h3>
+            <ul>
+                <li>Check <code>GET /api/health</code> on production URL after deploy.</li>
+                <li>Run the same voice API calls against production URL.</li>
+                <li>Validate website pages still load (home/book/contact/gallery/services).</li>
+                <li>Tail logs for errors:</li>
+            </ul>
+            <pre><code>az webapp log tail --resource-group anova --name Anova</code></pre>
+
+            <h3>4) End-to-end phone call test (when ACS event wiring is enabled)</h3>
+            <ul>
+                <li>Point ACS incoming call event to <code>/api/voice/call/incoming</code>.</li>
+                <li>Confirm callback events hit <code>/api/voice/call/events</code>.</li>
+                <li>Verify fallback transfer number and booking provider values in response and logs.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>Rollback Plan for B1 (No Slot)</h2>
+            <ol>
+                <li>Before each deploy, keep the previous working ZIP (for example <code>deploy-previous.zip</code>).
+                </li>
+                <li>If errors appear, redeploy the previous ZIP immediately:</li>
+            </ol>
+            <pre><code>az webapp deploy --resource-group anova --name Anova --src-path .\deploy-previous.zip --type zip</code></pre>
+            <ol start="3">
+                <li>Confirm recovery with <code>/api/health</code> and key voice endpoints.</li>
+            </ol>
+        </section>
+
+        <section class="card">
+            <h2>Quick Decision</h2>
+            <p><strong>On your current B1 plan, deploy directly to production.</strong> It can cause a short restart
+                window, so deploy in low traffic and keep a rollback ZIP ready.</p>
+        </section>
+    </main>
+</body>
+
+</html>

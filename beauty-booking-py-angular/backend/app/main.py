@@ -6,8 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, RedirectResponse
 
 from .localization import LANG_MAP, get_text
+from .voice.routes import router as voice_router
 
 app = FastAPI(title="BeautyBooking Python Backend")
+app.include_router(voice_router)
 
 app.add_middleware(
     CORSMiddleware,
