@@ -11,7 +11,7 @@ export const routes: Routes = [
     { path: 'book/elev', component: ElevComponent },
     { path: 'book', component: BookComponent },
     { path: 'thanks', component: ThanksComponent },
-    { path: 'contact', component: RedirectHomeComponent, data: { fragment: 'hours-contact' } },
+    { path: 'contact', component: RedirectHomeComponent, data: { fragment: 'contact' } },
     { path: 'gallery', component: RedirectHomeComponent, data: { fragment: 'gallery' } },
     { path: 'services', component: RedirectHomeComponent, data: { fragment: 'services' } },
     { path: 'price', component: RedirectHomeComponent, data: { fragment: 'services' } },
