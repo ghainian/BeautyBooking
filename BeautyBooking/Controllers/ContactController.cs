@@ -1,4 +1,5 @@
 using BeautyBooking.Models;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,7 +16,8 @@ namespace BeautyBooking.Controllers
 
         public IActionResult Index()
         {
-            return Redirect("/home#hours-contact");
+            var language = HttpContext.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.TwoLetterISOLanguageName ?? "da";
+            return Redirect($"/home?culture={language}&ui-culture={language}#contact");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

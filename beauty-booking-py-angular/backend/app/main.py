@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Dict
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, RedirectResponse
 
@@ -33,24 +33,32 @@ def get_translation(language: str, key: str) -> Dict[str, str]:
     return {"key": key, "language": language, "value": get_text(language, key)}
 
 
+def _redirect_to_home_section(request: Request, anchor: str) -> RedirectResponse:
+    language = (request.query_params.get("culture")
+                or request.query_params.get("ui-culture") or "da").lower()
+    if language not in LANG_MAP:
+        language = "da"
+    return RedirectResponse(url=f"/home?culture={language}&ui-culture={language}{anchor}", status_code=307)
+
+
 @app.get("/contact")
-def contact_redirect() -> RedirectResponse:
-    return RedirectResponse(url="/home#hours-contact", status_code=307)
+def contact_redirect(request: Request) -> RedirectResponse:
+    return _redirect_to_home_section(request, "#contact")
 
 
 @app.get("/gallery")
-def gallery_redirect() -> RedirectResponse:
-    return RedirectResponse(url="/home#gallery", status_code=307)
+def gallery_redirect(request: Request) -> RedirectResponse:
+    return _redirect_to_home_section(request, "#gallery")
 
 
 @app.get("/services")
-def services_redirect() -> RedirectResponse:
-    return RedirectResponse(url="/home#services", status_code=307)
+def services_redirect(request: Request) -> RedirectResponse:
+    return _redirect_to_home_section(request, "#services")
 
 
 @app.get("/price")
-def price_redirect() -> RedirectResponse:
-    return RedirectResponse(url="/home#services", status_code=307)
+def price_redirect(request: Request) -> RedirectResponse:
+    return _redirect_to_home_section(request, "#services")
 
 
 @app.api_route("/contactform/contact-form-handler.php", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
@@ -71,6 +79,10 @@ def removed_legacy_contact_form_thanks() -> None:
 DIST_DIR = (Path(__file__).resolve().parent.parent / "frontend-dist").resolve()
 
 if DIST_DIR.exists():
+    @app.get("/")
+    def spa_root() -> FileResponse:
+        return FileResponse(str(DIST_DIR / "index.html"))
+
     @app.get("/{full_path:path}")
     def spa_fallback(full_path: str) -> FileResponse:
         requested = (DIST_DIR / full_path).resolve()
