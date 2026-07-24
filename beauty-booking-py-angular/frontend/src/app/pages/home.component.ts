@@ -20,9 +20,18 @@ export class HomeComponent implements OnInit, OnDestroy {
         document.body.className = 'onepage-home';
 
         const qpSub = this.route.queryParamMap.subscribe((params) => {
-            const saved = (localStorage.getItem('anovaLang') || 'da').toLowerCase();
-            const requested = (params.get('culture') || params.get('ui-culture') || saved).toLowerCase();
-            this.currentLanguage = this.allowedLanguages.includes(requested) ? requested : 'da';
+            const fromUrl = (params.get('culture') || params.get('ui-culture') || '').toLowerCase();
+            if (this.allowedLanguages.includes(fromUrl)) {
+                // User explicitly navigated to a language URL — honour it and remember for this session.
+                this.currentLanguage = fromUrl;
+                sessionStorage.setItem('anovaLang', fromUrl);
+            } else {
+                // No URL param: use this session's saved choice, defaulting to Danish.
+                // sessionStorage is cleared when the browser tab/window is closed, so
+                // every fresh browser session starts in Danish regardless of history.
+                const saved = sessionStorage.getItem('anovaLang') || 'da';
+                this.currentLanguage = this.allowedLanguages.includes(saved) ? saved : 'da';
+            }
             localStorage.setItem('anovaLang', this.currentLanguage);
             this.loadTranslations(this.currentLanguage);
         });

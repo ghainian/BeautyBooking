@@ -33,6 +33,7 @@ class BookingRequest(BaseModel):
     start_time: str
     language: str = "da"
     customer_name: Optional[str] = None
+    staff_name: Optional[str] = None
     idempotency_key: str
 
 
@@ -42,6 +43,7 @@ class BookingResponse(BaseModel):
     service_name: str
     start_time: str
     confirmation_text: str
+    staff_name: Optional[str] = None
 
 
 class CancelVerifyRequest(BaseModel):

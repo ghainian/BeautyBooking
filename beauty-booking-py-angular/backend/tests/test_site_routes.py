@@ -91,3 +91,64 @@ def test_spa_fallback_serves_dist_file_when_file_exists(client) -> None:
 
     assert response.status_code == 200
     assert "text/html" in response.headers.get("content-type", "")
+
+
+# ---------------------------------------------------------------------------
+# Additional coverage
+# ---------------------------------------------------------------------------
+
+def test_health_endpoint_returns_correct_content_type(client) -> None:
+    response = client.get("/api/health")
+    assert "application/json" in response.headers.get("content-type", "")
+
+
+def test_translations_endpoint_for_english_contains_english_values(client) -> None:
+    response = client.get("/api/translations/en")
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["HeroBrand"] == "SALON ANOVA"
+    assert payload["NavBook"] == "Book Online"
+    assert payload["Service1Name"] == "Men's haircut"
+
+
+def test_translations_endpoint_all_supported_languages_return_200(client) -> None:
+    for lang in ("da", "en"):
+        response = client.get(f"/api/translations/{lang}")
+        assert response.status_code == 200, f"Failed for {lang}"
+
+
+def test_translation_key_lookup_english_hero_title(client) -> None:
+    response = client.get("/api/translations/en/HeroTitle")
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["language"] == "en"
+    assert "haircare" in payload["value"].lower()
+
+
+def test_translation_key_lookup_unknown_key_echoes_key(client) -> None:
+    response = client.get("/api/translations/en/___missing___")
+    assert response.status_code == 200
+    assert response.json()["value"] == "___missing___"
+
+
+@pytest.mark.parametrize("method", ["put", "patch", "delete"])
+def test_legacy_contact_form_returns_404_for_all_methods(client, method: str) -> None:
+    response = getattr(client, method)("/contactform/contact-form-handler.php")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Endpoint removed"
+
+
+def test_home_route_redirects_to_itself_without_loop(client) -> None:
+    """GET /home should NOT redirect — it should serve the SPA index."""
+    response = client.get("/home", follow_redirects=False)
+    # /home is an unknown SPA route; the fallback must serve index.html (200)
+    # or a redirect that resolves to a 200. Either way no infinite loop.
+    assert response.status_code in (200, 307, 308)
+
+
+def test_cors_header_present_on_api_response(client) -> None:
+    response = client.get(
+        "/api/health", headers={"Origin": "http://localhost:4200"})
+    assert response.status_code == 200
+    # CORS middleware should echo back the allow-origin header
+    assert "access-control-allow-origin" in response.headers

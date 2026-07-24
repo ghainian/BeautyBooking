@@ -353,6 +353,7 @@ MigrationBackup/
 .ionide/
 
 # Custom ignores
+**/.env
 **/wwwroot/lib/
 # Build/deploy artifacts to keep out of source control
 beauty-booking-py-angular/backend/frontend-dist/

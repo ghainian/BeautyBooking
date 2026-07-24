@@ -5,3 +5,11 @@ pydantic==2.7.1
 python-multipart==0.0.9
 opentelemetry-instrumentation-fastapi==0.46b0
 pytest==8.3.2
+# Azure AI Foundry / Azure OpenAI agent integration
+azure-ai-agents>=1.1.0
+azure-identity>=1.19.0
+openai>=1.0.0
+# Setmore API HTTP client
+httpx>=0.27.0
+# Load .env files in development
+python-dotenv>=1.0.0

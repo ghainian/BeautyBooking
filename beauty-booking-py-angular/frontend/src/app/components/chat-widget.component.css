@@ -34,15 +34,32 @@
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.2);
 }
 
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .chat-header h3 {
     margin: 5px;
     font-size: 20px;
 }
 
-.chat-header p {
-    margin: 4px 0 0;
-    font-size: 14px;
+.chat-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
     color: #666;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.chat-close:hover {
+    background: #ece9e1;
+    color: #1f1f1f;
 }
 
 .chat-thread {
