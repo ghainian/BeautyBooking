@@ -1,0 +1,24 @@
+<button class="chat-launcher" [class.chat-launcher-open]="open" type="button" (click)="toggleOpen()">
+    {{ open ? launcherLabel.close : launcherLabel.open }}
+</button>
+
+<section class="chat-shell" *ngIf="open" aria-label="Global booking chat panel">
+    <header class="chat-header">
+        <h3>{{ title }}</h3>
+        <button class="chat-close" type="button" (click)="toggleOpen()" aria-label="Close chat">&times;</button>
+    </header>
+
+    <div class="chat-thread">
+        <div *ngFor="let message of messages" class="chat-bubble" [class.chat-user]="message.role === 'user'"
+            [class.chat-agent]="message.role === 'agent'">
+            {{ message.text }}
+        </div>
+    </div>
+
+    <form class="chat-form" (ngSubmit)="sendMessage()">
+        <input name="globalChatMessage" [(ngModel)]="currentMessage" [placeholder]="placeholder" />
+        <button type="submit" [disabled]="sending">
+            {{ sending ? sendLabel.sending : sendLabel.send }}
+        </button>
+    </form>
+</section>

@@ -1,0 +1,7 @@
+{
+    "python.testing.pytestArgs": [
+        "beauty-booking-py-angular"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}
