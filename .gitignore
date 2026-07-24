@@ -354,3 +354,10 @@ MigrationBackup/
 
 # Custom ignores
 **/wwwroot/lib/
+# Build/deploy artifacts to keep out of source control
+beauty-booking-py-angular/backend/frontend-dist/
+beauty-booking-py-angular/backend/.venv312/
+beauty-booking-py-angular/frontend/dist/
+beauty-booking-py-angular/frontend/.angular/
+BeautyBooking/bin/
+BeautyBooking/obj/

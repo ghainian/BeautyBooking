@@ -1,0 +1,24 @@
+<button class="chat-launcher" [class.chat-launcher-open]="open" type="button" (click)="toggleOpen()">
+    {{ open ? 'Close Chat' : 'Chat With Anova' }}
+</button>
+
+<section class="chat-shell" *ngIf="open" aria-label="Global booking chat panel">
+    <header class="chat-header">
+        <h3>Anova Assistant</h3>
+    </header>
+
+    <div class="chat-thread">
+        <div *ngFor="let message of messages" class="chat-bubble" [class.chat-user]="message.role === 'user'"
+            [class.chat-agent]="message.role === 'agent'">
+            {{ message.text }}
+        </div>
+    </div>
+
+    <form class="chat-form" (ngSubmit)="sendMessage()">
+        <input name="globalChatMessage" [(ngModel)]="currentMessage"
+            placeholder="Try: Book ladies haircut Friday at 10, +45 22334455" />
+        <button type="submit" [disabled]="sending">
+            {{ sending ? 'Sending...' : 'Send' }}
+        </button>
+    </form>
+</section>

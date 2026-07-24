@@ -47,10 +47,10 @@ def test_translation_key_lookup_returns_key_when_missing(client) -> None:
 @pytest.mark.parametrize(
     "path,location",
     [
-        ("/contact", "/home#hours-contact"),
-        ("/gallery", "/home#gallery"),
-        ("/services", "/home#services"),
-        ("/price", "/home#services"),
+        ("/contact", "/home?culture=da&ui-culture=da#contact"),
+        ("/gallery", "/home?culture=da&ui-culture=da#gallery"),
+        ("/services", "/home?culture=da&ui-culture=da#services"),
+        ("/price", "/home?culture=da&ui-culture=da#services"),
     ],
 )
 def test_legacy_section_redirects(client, path: str, location: str) -> None:

@@ -1,33 +1,13 @@
 from typing import List, Literal, Optional
 
-from pydantic import BaseModel, Field
-
-
-class VoiceStatusResponse(BaseModel):
-    status: str
-    message: str
-
-
-class IncomingCallEvent(BaseModel):
-    call_id: Optional[str] = None
-    from_number: Optional[str] = Field(default=None, alias="from")
-    to_number: Optional[str] = Field(default=None, alias="to")
-    raw_event: dict = Field(default_factory=dict)
-
-    model_config = {"populate_by_name": True}
-
-
-class CallEventEnvelope(BaseModel):
-    call_id: Optional[str] = None
-    event_type: Optional[str] = None
-    operation_context: Optional[str] = None
-    raw_event: dict = Field(default_factory=dict)
+from pydantic import BaseModel
 
 
 class ServiceSummary(BaseModel):
     service_id: str
     name: str
     duration_minutes: int
+    price_label: str
     language: str = "da"
 
 

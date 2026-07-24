@@ -5,11 +5,11 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, RedirectResponse
 
+from .chatbot import BookingChatAgent, ChatRequest, ChatResponse
 from .localization import LANG_MAP, get_text
-from .voice.routes import router as voice_router
 
 app = FastAPI(title="BeautyBooking Python Backend")
-app.include_router(voice_router)
+chat_agent = BookingChatAgent()
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,6 +33,11 @@ def get_translations(language: str) -> Dict[str, str]:
 @app.get("/api/translations/{language}/{key}")
 def get_translation(language: str, key: str) -> Dict[str, str]:
     return {"key": key, "language": language, "value": get_text(language, key)}
+
+
+@app.post("/api/chat", response_model=ChatResponse)
+def chat(request: ChatRequest) -> ChatResponse:
+    return chat_agent.answer(request)
 
 
 def _redirect_to_home_section(request: Request, anchor: str) -> RedirectResponse:
