@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -185,6 +186,7 @@ class BookingAdapter:
         # Stub-mode state
         self._stub_catalog_cache: list[dict] = []
         self._stub_next_refresh_at: datetime | None = None
+        self._stub_bookings: dict[str, str] = {}  # booking_id → customer_phone
 
         # Setmore-mode state
         self._sm_services: list[dict] = []
@@ -355,10 +357,16 @@ class BookingAdapter:
             service_id, date, staff_keys)
         key_to_name = {s["key"]: self._staff_display_name(
             s) for s in self._sm_staff}
+        # For today, filter out slots that have already passed.
+        now_local = self._now_in_copenhagen()
+        is_today = date == now_local.date().isoformat()
+        now_hhmm = now_local.strftime("%H:%M") if is_today else None
         result: dict[str, list[str]] = {}
         for sk in staff_keys:
             raw_slots = slots_by_staff.get(sk, [])
             hhmm = [h for h in (_slot_to_hhmm(s) for s in raw_slots) if h]
+            if is_today and now_hhmm:
+                hhmm = [h for h in hhmm if h > now_hhmm]
             if hhmm:
                 result[key_to_name.get(sk, sk)] = sorted(hhmm)
         return result
@@ -521,9 +529,26 @@ class BookingAdapter:
         if request.staff_name:
             key_by_name = self._find_staff_key_by_name(request.staff_name)
             if key_by_name and key_by_name in staff_keys:
-                staff_key = key_by_name
-                logger.info("Using requested staff %s (%s)",
-                            request.staff_name, staff_key)
+                slot_values = slots_by_staff.get(key_by_name, [])
+                if any(_slot_to_hhmm(slot) == requested_hhmm for slot in slot_values):
+                    staff_key = key_by_name
+                    logger.info("Using requested staff %s (%s)",
+                                request.staff_name, staff_key)
+                else:
+                    raise ValueError(
+                        f"Requested staff '{request.staff_name}' is not available at {requested_hhmm}. "
+                        "Please choose another time or stylist."
+                    )
+            elif key_by_name is None:
+                raise ValueError(
+                    f"Requested staff '{request.staff_name}' was not found. "
+                    "Please choose one of the available stylists."
+                )
+            else:
+                raise ValueError(
+                    f"Requested staff '{request.staff_name}' does not provide this service right now. "
+                    "Please choose another stylist."
+                )
 
         if not staff_key:
             for candidate in staff_keys:
@@ -692,7 +717,7 @@ class BookingAdapter:
         normalized_start_time = _as_copenhagen_datetime(
             request.start_time
         ).isoformat(timespec="seconds")
-        return BookingResponse(
+        result = BookingResponse(
             status="confirmed",
             booking_id="stub-booking-001",
             service_name=self._stub_service_name(
@@ -702,15 +727,27 @@ class BookingAdapter:
             confirmation_text=self._confirmation_text(
                 request.language, normalized_start_time),
         )
+        self._stub_bookings[result.booking_id] = request.customer_phone
+        return result
 
     def _stub_verify_cancellation(self, request: CancelVerifyRequest) -> CancelVerifyResponse:
+        booking_id = request.booking_reference or "stub-booking-001"
+        # Phone verification: if the booking exists in our stub store, compare phones.
+        if booking_id in self._stub_bookings:
+            stored_phone = re.sub(r"\D", "", self._stub_bookings[booking_id])
+            provided_phone = re.sub(r"\D", "", request.customer_phone)
+            if stored_phone and provided_phone and stored_phone != provided_phone:
+                return CancelVerifyResponse(
+                    verified=False,
+                    message="Phone number does not match the booking.",
+                )
         language = "da"
         if request.service_id and request.service_id != "haircut_ladies":
             language = "en"
         return CancelVerifyResponse(
             verified=True,
             booking=CancellationCandidate(
-                booking_id=request.booking_reference or "stub-booking-001",
+                booking_id=booking_id,
                 service_name=self._stub_service_name(
                     service_id=request.service_id or "haircut_ladies",
                     language=language,
