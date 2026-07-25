@@ -836,7 +836,27 @@ class FoundryChatAgent:
         if state.staff_name:
             booking_kwargs["staff_name"] = state.staff_name
 
-        output = self._dispatch["create_booking"](**booking_kwargs)
+        try:
+            output = self._dispatch["create_booking"](**booking_kwargs)
+        except Exception as exc:
+            logger.warning("Fallback create_booking failed: %s", exc)
+            if request.language.startswith("da"):
+                return ChatResponse(
+                    session_id=session_id,
+                    reply=(
+                        f"{prebook_text}\n"
+                        "Den valgte medarbejder er ikke ledig pa det tidspunkt. "
+                        "Vaelg venligst en anden tid eller en anden medarbejder."
+                    ),
+                )
+            return ChatResponse(
+                session_id=session_id,
+                reply=(
+                    f"{prebook_text}\n"
+                    "The selected teammate is not available at that time. "
+                    "Please choose another time or teammate."
+                ),
+            )
         data = json.loads(output)
         booking = BookingResponse(
             status=data.get("status", "confirmed"),

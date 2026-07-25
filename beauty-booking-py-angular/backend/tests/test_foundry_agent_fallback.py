@@ -574,3 +574,53 @@ def test_booking_uses_chosen_staff_when_sahar_unavailable() -> None:
     assert create_calls[0].get("staff_name") == "Ali Hassan", (
         f"Expected staff_name='Ali Hassan', got: {create_calls[0].get('staff_name')!r}"
     )
+
+
+def test_booking_honors_explicit_requested_teammate() -> None:
+    """If the user explicitly asks for Ebrahim, that teammate must be passed to create_booking."""
+    create_calls: list[dict] = []
+
+    def create_booking(**kwargs) -> str:
+        create_calls.append(kwargs)
+        return (
+            '{"status":"confirmed","booking_id":"bk-3","service_name":"Men\'s Haircut",'
+            '"start_time":"2026-07-24T16:00:00+02:00","staff_name":"Ebrahim",'
+            '"confirmation_text":"Booked with Ebrahim."}'
+        )
+
+    call_count = {"n": 0}
+
+    def completion(*, messages, **_):
+        call_count["n"] += 1
+        if call_count["n"] == 1:
+            return _fake_choice(tool_calls=[
+                _fake_tool_call("sa3", "get_staff_availability",
+                                '{"service_id":"herre_klipning","date":"2026-07-24"}'),
+            ])
+        return _fake_choice(content="Ebrahim er ledig kl. 16:00. Send dit telefonnummer.")
+
+    agent = _make_agent(
+        dispatch={
+            "get_staff_availability": lambda **_: '{"Ebrahim":["16:00"],"Sahar Ebrahim":["17:00"]}',
+            "create_booking": create_booking,
+        },
+        completion_fn=completion,
+    )
+
+    t1 = agent.answer(SimpleNamespace(
+        message="book 16:00 with Ebrahim",
+        session_id="staff-test-3", language="en"))
+    assert "ebrahim" in t1.reply.lower()
+
+    t2 = agent.answer(SimpleNamespace(
+        message="my phone number is 23391178",
+        session_id="staff-test-3", language="en"))
+    assert t2.booking is None
+
+    t3 = agent.answer(SimpleNamespace(
+        message="Mehran",
+        session_id="staff-test-3", language="en"))
+
+    assert t3.booking is not None
+    assert len(create_calls) == 1
+    assert create_calls[0].get("staff_name") == "Ebrahim"
