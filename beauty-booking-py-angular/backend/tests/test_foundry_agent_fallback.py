@@ -574,3 +574,229 @@ def test_booking_uses_chosen_staff_when_sahar_unavailable() -> None:
     assert create_calls[0].get("staff_name") == "Ali Hassan", (
         f"Expected staff_name='Ali Hassan', got: {create_calls[0].get('staff_name')!r}"
     )
+
+
+def test_booking_honors_explicit_requested_teammate() -> None:
+    """If the user explicitly asks for Ebrahim, that teammate must be passed to create_booking."""
+    create_calls: list[dict] = []
+
+    def create_booking(**kwargs) -> str:
+        create_calls.append(kwargs)
+        return (
+            '{"status":"confirmed","booking_id":"bk-3","service_name":"Men\'s Haircut",'
+            '"start_time":"2026-07-24T16:00:00+02:00","staff_name":"Ebrahim",'
+            '"confirmation_text":"Booked with Ebrahim."}'
+        )
+
+    call_count = {"n": 0}
+
+    def completion(*, messages, **_):
+        call_count["n"] += 1
+        if call_count["n"] == 1:
+            return _fake_choice(tool_calls=[
+                _fake_tool_call("sa3", "get_staff_availability",
+                                '{"service_id":"herre_klipning","date":"2026-07-24"}'),
+            ])
+        return _fake_choice(content="Ebrahim er ledig kl. 16:00. Send dit telefonnummer.")
+
+    agent = _make_agent(
+        dispatch={
+            "get_staff_availability": lambda **_: '{"Ebrahim":["16:00"],"Sahar Ebrahim":["17:00"]}',
+            "create_booking": create_booking,
+        },
+        completion_fn=completion,
+    )
+
+    t1 = agent.answer(SimpleNamespace(
+        message="book 16:00 with Ebrahim",
+        session_id="staff-test-3", language="en"))
+    assert "ebrahim" in t1.reply.lower()
+
+    t2 = agent.answer(SimpleNamespace(
+        message="my phone number is 23391178",
+        session_id="staff-test-3", language="en"))
+    assert t2.booking is None
+
+    t3 = agent.answer(SimpleNamespace(
+        message="Mehran",
+        session_id="staff-test-3", language="en"))
+
+    assert t3.booking is not None
+    assert len(create_calls) == 1
+    assert create_calls[0].get("staff_name") == "Ebrahim"
+
+
+# ---------------------------------------------------------------------------
+# Teammate announcement and confirmation messaging scenarios
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "session_id, language, user_message, staff_payload, llm_announcement, expected_staff, expected_service_name",
+    [
+        (
+            "announce-confirm-1",
+            "da",
+            "bestil herre klipning idag klokken 17:45",
+            '{"Sahar Ebrahim":["17:45"],"Other Barber":["16:00"]}',
+            "Med Sahar Ebrahim er de ledige tider: 17:45.",
+            "Sahar Ebrahim",
+            "Men's Haircut",
+        ),
+        (
+            "announce-confirm-2",
+            "da",
+            "bestil herre klipning idag klokken 16:00",
+            '{"Ali Hassan":["16:00"]}',
+            "Sahar er ikke ledig. Ali Hassan er ledig kl. 16:00.",
+            "Ali Hassan",
+            "Men's Haircut",
+        ),
+        (
+            "announce-confirm-3",
+            "en",
+            "book 16:00 with Ebrahim",
+            '{"Ebrahim":["16:00"],"Sahar Ebrahim":["17:00"]}',
+            "Ebrahim is available at 16:00.",
+            "Ebrahim",
+            "Men's Haircut",
+        ),
+    ],
+)
+def test_teammate_announcement_and_confirmation_flow_all_scenarios(
+    session_id: str,
+    language: str,
+    user_message: str,
+    staff_payload: str,
+    llm_announcement: str,
+    expected_staff: str,
+    expected_service_name: str,
+) -> None:
+    """Ensure all booking scenarios communicate teammate name clearly and confirm
+    service + time + teammate before/after booking."""
+    create_calls: list[dict] = []
+
+    def create_booking(**kwargs) -> str:
+        create_calls.append(kwargs)
+        return (
+            '{"status":"confirmed","booking_id":"bk-confirm","service_name":"Men\'s Haircut",'
+            f'"start_time":"2026-07-24T{kwargs["time"]}:00+02:00","staff_name":"{expected_staff}",'
+            '"confirmation_text":"legacy-text"}'
+        )
+
+    call_count = {"n": 0}
+
+    def completion(*, messages, **_):
+        call_count["n"] += 1
+        if call_count["n"] == 1:
+            return _fake_choice(tool_calls=[
+                _fake_tool_call(
+                    "sa-all",
+                    "get_staff_availability",
+                    '{"service_id":"herre_klipning","date":"2026-07-24"}',
+                ),
+            ])
+        return _fake_choice(content=llm_announcement)
+
+    agent = _make_agent(
+        dispatch={
+            "get_staff_availability": lambda **_: staff_payload,
+            "create_booking": create_booking,
+        },
+        completion_fn=completion,
+    )
+
+    first = agent.answer(SimpleNamespace(
+        message=user_message,
+        session_id=session_id,
+        language=language,
+    ))
+    assert expected_staff.split()[0].lower() in first.reply.lower()
+
+    second = agent.answer(SimpleNamespace(
+        message="my phone number is 23391178" if language == "en" else "mit nummer er 23391178",
+        session_id=session_id,
+        language=language,
+    ))
+    assert second.booking is None
+
+    third = agent.answer(SimpleNamespace(
+        message="Mehran",
+        session_id=session_id,
+        language=language,
+    ))
+
+    assert third.booking is not None
+    assert len(create_calls) == 1
+    assert create_calls[0].get("staff_name") == expected_staff
+
+    reply_lower = third.reply.lower()
+    expected_first_name = expected_staff.split()[0].lower()
+
+    # Pre-book confirmation must include service, time, and teammate.
+    if language == "da":
+        assert "jeg bekraefter lige" in reply_lower
+        assert "jeg booker nu tiden hos" in reply_lower
+    else:
+        assert "just to confirm:" in reply_lower
+        assert "i will now book this time with" in reply_lower
+
+    assert expected_service_name.lower() in reply_lower
+    assert "16:00" in third.reply or "17:45" in third.reply
+    assert expected_first_name in reply_lower
+
+    # Final confirmation must also include teammate name.
+    if language == "da":
+        assert "din tid er booket:" in reply_lower
+        assert "bookingreference:" in reply_lower
+    else:
+        assert "your booking is confirmed:" in reply_lower
+        assert "booking reference:" in reply_lower
+    assert expected_first_name in reply_lower
+
+
+def test_teammate_unavailable_message_mentions_teammate_and_next_step() -> None:
+    """If booking fails for requested teammate/time, user must get a clear teammate-specific message."""
+
+    def create_booking(**_kwargs) -> str:
+        raise ValueError(
+            "Requested staff 'Ebrahim' is not available at 16:00.")
+
+    call_count = {"n": 0}
+
+    def completion(*, messages, **_):
+        call_count["n"] += 1
+        if call_count["n"] == 1:
+            return _fake_choice(tool_calls=[
+                _fake_tool_call(
+                    "sa-unavailable",
+                    "get_staff_availability",
+                    '{"service_id":"herre_klipning","date":"2026-07-24"}',
+                ),
+            ])
+        return _fake_choice(content="Ebrahim is available at 16:00.")
+
+    agent = _make_agent(
+        dispatch={
+            "get_staff_availability": lambda **_: '{"Ebrahim":["16:00"]}',
+            "create_booking": create_booking,
+        },
+        completion_fn=completion,
+    )
+
+    agent.answer(SimpleNamespace(
+        message="book 16:00 with Ebrahim",
+        session_id="staff-unavailable", language="en"))
+    agent.answer(SimpleNamespace(
+        message="my phone number is 23391178",
+        session_id="staff-unavailable", language="en"))
+    final = agent.answer(SimpleNamespace(
+        message="Mehran",
+        session_id="staff-unavailable", language="en"))
+
+    lower = final.reply.lower()
+    assert "just to confirm:" in lower
+    assert "with ebrahim" in lower
+    assert "selected teammate is not available" in lower
+    assert "choose another time or teammate" in lower
+    assert final.booking is None

@@ -37,12 +37,14 @@ logger = logging.getLogger(__name__)
 @dataclass
 class _FallbackBookingState:
     service_id: str | None = None
+    service_name: str | None = None
     date: str | None = None
     available_times: list[str] = field(default_factory=list)
     selected_time: str | None = None
     customer_phone: str | None = None
     customer_name: str | None = None
     staff_name: str | None = None   # stylist chosen for this booking
+    staff_explicitly_requested: bool = False
     awaiting_name: bool = False
 
 
@@ -86,34 +88,49 @@ IMPORTANT RULES
    Determine the language from the first substantive message and keep it for the entire conversation.
    Phone numbers, digits, names, and single words do NOT indicate a language change — ignore them for language detection and continue in the previously established language.
 2. Never invent time slots. Always call get_availability BEFORE offering or confirming a time.
-3. Booking flow:
+3. DATE VALIDATION — check before calling get_availability or create_booking:
+   - PAST: If the requested date/time is in the past (before right now, Copenhagen time), refuse politely.
+     Do NOT call get_availability for past dates. Tell the customer the time has already passed and ask for a future date.
+   - TOO FAR FUTURE: If the requested date is more than 1 month (31 days) from today, refuse politely.
+     Explain that bookings can only be made up to 1 month in advance.
+   - TODAY + TIME: If the customer requests today at a specific time that has already passed, treat it as a past time and refuse.
+4. Booking flow:
    a. Identify the service.
-   b. Determine the date:
+   b. Determine the date (after passing date validation in rule 3):
       - If the customer says "earliest", "soonest", "first available", "as soon as possible", or any equivalent,
         call get_availability(service_id, TODAY) immediately. If no slots are returned, try TOMORROW, then the
         day after, continuing up to 7 days ahead until a slot is found. Do NOT ask the customer for a date.
       - Otherwise ask for their preferred date and time, then call get_availability for that date.
-   c. Present only the returned slots (the first available slot for "earliest" requests).
+   c. Present the available slots — always name the staff member whose slots you are showing.
+      Example: "Sahar is available at: 09:30, 10:00, 10:30." or "Med Sahar er ledige tider: 09:30, 10:00."
+      If multiple staff members have slots, list each one separately with their name.
    d. Confirm which slot the customer wants (skip this step for "earliest" if there is only one option).
+    d2. Before calling create_booking, explicitly confirm these three fields in one sentence:
+        service name, time, and staff name. Example: "I am about to book Men's Haircut at 15:45 with Sahar Ebrahim."
    e. Ask for the customer's phone number.
    f. Call create_booking to confirm. Pass the conversation language code in the "language" parameter.
    g. After create_booking succeeds, compose your OWN confirmation message in the conversation language
       using the returned service_name, start_time, and booking_id fields.
       Never output the raw "confirmation_text" field — it may be in a different language.
-4. Cancellation flow:
-   a. Ask for booking reference or service + date.
-   b. Call cancel_booking with the reference.
-5. Keep answers concise and professional.
+5. Cancellation flow:
+   a. Ask for the customer's phone number (required for security).
+   b. Ask for the booking reference (or service + date if no reference).
+   c. Call cancel_booking with both the booking_reference AND customer_phone.
+   d. If the tool returns a phone_mismatch error: tell the customer the phone number
+      does not match the booking and ask them to double-check.
+   e. On success: confirm the cancellation in the conversation language.
+6. Keep answers concise and professional.
 
 STAFF SELECTION
-- Sahar Ebrahim is the default stylist for all bookings.
+- Sahar is the default stylist for all bookings.
+- If the customer explicitly requests a specific stylist by name (e.g. "book with Ebrahim", "I want Sahar"), honour that request — do NOT override it with Sahar.
 - When you have identified the service and date, call get_staff_availability(service_id, date).
-- If Sahar has the requested time slot (or any slot for "earliest" requests): book with Sahar.
+- If the customer did NOT specify a stylist AND Sahar has the requested time slot: book with Sahar.
   Always mention "with Sahar" in your reply before and after confirming.
-- If Sahar does NOT have the requested time: present the names and available times of the
-  other staff members returned, ask which one the customer prefers, then proceed.
+- If the customer did NOT specify a stylist AND Sahar does NOT have the requested time: present the other available staff and ask the customer to choose.
 - Pass the chosen staff name in the "staff_name" field of create_booking.
 - Always mention the stylist's name in the booking confirmation.
+- If the requested stylist is unavailable at the requested time, state this clearly and ask the customer to choose another time or another stylist before booking.
 """
 
 # ---------------------------------------------------------------------------
@@ -210,13 +227,17 @@ _TOOLS_JSON = [
         "type": "function",
         "function": {
             "name": "cancel_booking",
-            "description": "Cancel an existing booking by its booking reference.",
+            "description": "Cancel an existing booking. Requires both the booking reference and the customer's phone number to verify ownership.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "booking_reference": {"type": "string"},
+                    "customer_phone": {
+                        "type": "string",
+                        "description": "The phone number used when the booking was made.",
+                    },
                 },
-                "required": ["booking_reference"],
+                "required": ["booking_reference", "customer_phone"],
             },
         },
     },
@@ -229,7 +250,44 @@ _TOOLS_JSON = [
 
 
 def _build_dispatch(adapter: BookingAdapter) -> dict:
-    """Return a name -> callable map for the four booking tools."""
+    """Return a name -> callable map for the booking tools."""
+
+    # ---------------------------------------------------------------
+    # Date-guard helpers — enforce rules that the LLM may overlook
+    # ---------------------------------------------------------------
+    def _copenhagen_today() -> "date":
+        from datetime import datetime as _dt
+        from zoneinfo import ZoneInfo
+        try:
+            return _dt.now(ZoneInfo("Europe/Copenhagen")).date()
+        except Exception:
+            return _dt.now().astimezone().date()
+
+    def _date_error(date: str) -> str | None:
+        """Return a JSON error string if the date is past or too far future, else None."""
+        from datetime import datetime as _dt, timedelta
+        try:
+            req_date = _dt.strptime(date, "%Y-%m-%d").date()
+        except ValueError:
+            return None  # let the adapter handle bad format
+        today = _copenhagen_today()
+        if req_date < today:
+            return json.dumps({
+                "error": "past_date",
+                "message": (
+                    f"The date {date} is in the past. "
+                    "Please choose a date from today onwards."
+                ),
+            }, ensure_ascii=False)
+        if req_date > today + timedelta(days=31):
+            return json.dumps({
+                "error": "too_far_future",
+                "message": (
+                    f"The date {date} is more than 1 month away. "
+                    "Bookings can only be made up to 31 days in advance."
+                ),
+            }, ensure_ascii=False)
+        return None
 
     def list_services(language: str = "en") -> str:
         services = adapter.list_services(language=language)
@@ -247,11 +305,17 @@ def _build_dispatch(adapter: BookingAdapter) -> dict:
         )
 
     def get_staff_availability(service_id: str, date: str) -> str:
+        err = _date_error(date)
+        if err:
+            return err
         detail = adapter.get_staff_availability_detail(
             service_id=service_id, date=date)
         return json.dumps(detail, ensure_ascii=False)
 
     def get_availability(service_id: str, date: str) -> str:
+        err = _date_error(date)
+        if err:
+            return err
         result = adapter.get_availability(service_id=service_id, date=date)
         slots = [s.start_time[11:16]
                  for s in result.slots if len(s.start_time) >= 16]
@@ -266,6 +330,9 @@ def _build_dispatch(adapter: BookingAdapter) -> dict:
         customer_name: str | None = None,
         staff_name: str | None = None,
     ) -> str:
+        err = _date_error(date)
+        if err:
+            return err
         start_time = f"{date}T{time}:00"
         response = adapter.create_booking(
             BookingRequest(
@@ -290,7 +357,18 @@ def _build_dispatch(adapter: BookingAdapter) -> dict:
             ensure_ascii=False,
         )
 
-    def cancel_booking(booking_reference: str) -> str:
+    def cancel_booking(booking_reference: str, customer_phone: str = "") -> str:
+        if customer_phone:
+            from .booking_models import CancelVerifyRequest
+            verify = adapter.verify_cancellation(CancelVerifyRequest(
+                customer_phone=customer_phone,
+                booking_reference=booking_reference,
+            ))
+            if not verify.verified:
+                return json.dumps({
+                    "error": "phone_mismatch",
+                    "message": "The phone number does not match the booking. Cancellation denied.",
+                }, ensure_ascii=False)
         result = adapter.confirm_cancellation(booking_id=booking_reference)
         return json.dumps(
             {
@@ -578,6 +656,83 @@ class FoundryChatAgent:
             for phrase in ["book it", "book it for me", "reserve it", "bestil", "book", "reserve"]
         )
 
+    def _extract_staff_preference(self, text: str) -> str | None:
+        normalized = (text or "").strip().lower()
+        if not normalized:
+            return None
+
+        # Common, explicit mentions first.
+        if "sahar" in normalized:
+            return "Sahar Ebrahim"
+        if "ebrahim" in normalized:
+            return "Ebrahim"
+
+        # Generic patterns like "with Ali" / "med Ali Hassan".
+        match = re.search(
+            r"(?:with|med)\s+([a-zA-Z\u00C0-\u017F'-]+(?:\s+[a-zA-Z\u00C0-\u017F'-]+)?)", text or "", re.IGNORECASE)
+        if match:
+            candidate = match.group(1).strip(" .,!?:;")
+            return candidate or None
+        return None
+
+    def _format_time_for_reply(self, hhmm: str | None) -> str:
+        return hhmm or ""
+
+    def _format_confirm_and_book_text(
+        self,
+        language: str,
+        service_name: str,
+        time_value: str,
+        staff_name: str,
+    ) -> str:
+        if language.startswith("da"):
+            return (
+                f"Jeg bekraefter lige: {service_name} kl. {time_value} med {staff_name}. "
+                f"Jeg booker nu tiden hos {staff_name}."
+            )
+        return (
+            f"Just to confirm: {service_name} at {time_value} with {staff_name}. "
+            f"I will now book this time with {staff_name}."
+        )
+
+    def _format_booking_confirmation(
+        self,
+        language: str,
+        service_name: str,
+        start_time: str,
+        staff_name: str,
+        booking_id: str,
+    ) -> str:
+        time_fragment = start_time[11:16] if len(
+            start_time) >= 16 else start_time
+        if language.startswith("da"):
+            return (
+                f"Din tid er booket: {service_name} kl. {time_fragment} med {staff_name}. "
+                f"Bookingreference: {booking_id}."
+            )
+        return (
+            f"Your booking is confirmed: {service_name} at {time_fragment} with {staff_name}. "
+            f"Booking reference: {booking_id}."
+        )
+
+    def _resolve_service_name(self, service_id: str, language: str) -> str:
+        list_services_tool = self._dispatch.get("list_services")
+        if list_services_tool is not None:
+            try:
+                payload = json.loads(list_services_tool(language=language))
+                if isinstance(payload, list):
+                    for item in payload:
+                        if isinstance(item, dict) and item.get("service_id") == service_id:
+                            name = item.get("name")
+                            if isinstance(name, str) and name.strip():
+                                return name
+            except Exception:
+                logger.debug(
+                    "Could not resolve service name via list_services", exc_info=True)
+
+        fallback = (service_id or "service").replace("_", " ").strip()
+        return fallback.title() if fallback else "Service"
+
     def _name_prompt(self, language: str) -> str:
         if language.startswith("da"):
             return "Jeg har dit telefonnummer. Hvad er navnet på personen, der skal bookes til?"
@@ -589,8 +744,12 @@ class FoundryChatAgent:
         service_id: str,
         date: str,
         available_times: list[str],
+        language: str,
     ) -> None:
         state = self._fallback_booking_state_for(session_id)
+        if service_id and service_id != state.service_id:
+            state.service_name = self._resolve_service_name(
+                service_id, language)
         state.service_id = service_id
         state.date = date
         state.available_times = list(available_times)
@@ -627,6 +786,11 @@ class FoundryChatAgent:
         if name:
             state.customer_name = name
 
+        requested_staff = self._extract_staff_preference(text)
+        if requested_staff:
+            state.staff_name = requested_staff
+            state.staff_explicitly_requested = True
+
         explicit_time = self._extract_requested_time(text, state)
         if explicit_time:
             state.selected_time = explicit_time
@@ -649,15 +813,50 @@ class FoundryChatAgent:
             return None
 
         state.awaiting_name = False
-        output = self._dispatch["create_booking"](
-            service_id=state.service_id,
-            date=state.date,
-            time=state.selected_time,
-            phone=state.customer_phone,
-            language=request.language,
-            customer_name=state.customer_name,
-            staff_name=state.staff_name,
+        display_service_name = state.service_name or self._resolve_service_name(
+            state.service_id,
+            request.language,
         )
+        selected_staff = state.staff_name or "Sahar Ebrahim"
+        prebook_text = self._format_confirm_and_book_text(
+            request.language,
+            display_service_name,
+            self._format_time_for_reply(state.selected_time),
+            selected_staff,
+        )
+
+        booking_kwargs = {
+            "service_id": state.service_id,
+            "date": state.date,
+            "time": state.selected_time,
+            "phone": state.customer_phone,
+            "language": request.language,
+            "customer_name": state.customer_name,
+        }
+        if state.staff_name:
+            booking_kwargs["staff_name"] = state.staff_name
+
+        try:
+            output = self._dispatch["create_booking"](**booking_kwargs)
+        except Exception as exc:
+            logger.warning("Fallback create_booking failed: %s", exc)
+            if request.language.startswith("da"):
+                return ChatResponse(
+                    session_id=session_id,
+                    reply=(
+                        f"{prebook_text}\n"
+                        "Den valgte medarbejder er ikke ledig pa det tidspunkt. "
+                        "Vaelg venligst en anden tid eller en anden medarbejder."
+                    ),
+                )
+            return ChatResponse(
+                session_id=session_id,
+                reply=(
+                    f"{prebook_text}\n"
+                    "The selected teammate is not available at that time. "
+                    "Please choose another time or teammate."
+                ),
+            )
         data = json.loads(output)
         booking = BookingResponse(
             status=data.get("status", "confirmed"),
@@ -667,10 +866,15 @@ class FoundryChatAgent:
             confirmation_text=data.get("confirmation_text", ""),
             staff_name=data.get("staff_name"),
         )
+        final_staff_name = booking.staff_name or selected_staff
+        final_reply = (
+            f"{prebook_text}\n"
+            f"{self._format_booking_confirmation(request.language, booking.service_name or display_service_name, booking.start_time, final_staff_name, booking.booking_id)}"
+        )
         self._fallback_booking_state[session_id] = _FallbackBookingState()
         return ChatResponse(
             session_id=session_id,
-            reply=data.get("confirmation_text") or booking.confirmation_text,
+            reply=final_reply,
             booking=booking,
         )
 
@@ -695,7 +899,7 @@ class FoundryChatAgent:
                     messages=messages,
                     tools=_TOOLS_JSON,
                     tool_choice="auto",
-                    temperature=0.2,
+                    temperature=0.0,
                 )
                 choice = completion.choices[0].message
                 tool_calls = choice.tool_calls or []
@@ -748,6 +952,7 @@ class FoundryChatAgent:
                                     args.get("service_id", ""),
                                     args.get("date", ""),
                                     data.get("available_times", []),
+                                    request.language,
                                 )
                             if name == "get_staff_availability":
                                 # Store the preferred staff in booking state so the
@@ -755,13 +960,30 @@ class FoundryChatAgent:
                                 data = json.loads(output)
                                 state = self._fallback_booking_state_for(
                                     session_id)
-                                # Match on first name OR full name (Setmore often stores first name only)
-                                _PREF_TOKENS = {"sahar", "sahar ebrahim"}
-                                chosen = next(
-                                    (n for n in data
-                                     if _normalize_person_name(n) in _PREF_TOKENS),
-                                    next(iter(data), None),
-                                )
+
+                                requested_norm = _normalize_person_name(
+                                    state.staff_name or "")
+
+                                chosen = None
+                                if requested_norm:
+                                    chosen = next(
+                                        (
+                                            n for n in data
+                                            if requested_norm in _normalize_person_name(n)
+                                            or _normalize_person_name(n) in requested_norm
+                                        ),
+                                        None,
+                                    )
+
+                                if not chosen:
+                                    # Match on first name OR full name (Setmore often stores first name only)
+                                    _PREF_TOKENS = {"sahar", "sahar ebrahim"}
+                                    chosen = next(
+                                        (n for n in data
+                                         if _normalize_person_name(n) in _PREF_TOKENS),
+                                        next(iter(data), None),
+                                    )
+
                                 if chosen:
                                     state.staff_name = chosen
                                 # Also register service/date/slots so the rule-based
@@ -774,6 +996,7 @@ class FoundryChatAgent:
                                     args.get("service_id", ""),
                                     args.get("date", ""),
                                     all_slots,
+                                    request.language,
                                 )
                             if name == "create_booking":
                                 data = json.loads(output)
